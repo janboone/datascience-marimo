@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/apple-touch-icon.png" />
+    <link rel="manifest" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>lecture1 bootstrap</title>
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/index-CgQsZfww.js"></script>
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/rolldown-runtime-B0Z9INg1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/react-CUdNIagt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/compiler-runtime-BQ9S8nyo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useEvent-Dc9HkKI2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/react-dom-CKsE8sC1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/schemas-BL-NsLlF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/isObject-BCaOs5rp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/isSymbol-oX0TOjjx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/now-Cmx0b_zA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/debounce-aFmHgJZY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/isArrayLikeObject-DnwgSs_Z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/_baseMerge-CQpUq7ep.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/objects-snlMn4yk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/jsx-runtime-B74pBk57.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useEventListener-BdZUApHd.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/invariant-Ci2dTZ72.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/utils-B3E7otfg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/constants-BDbGiS7O.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/Deferred-CrTnjj37.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/session-C8nQMsOE.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/config-CmBpjGXk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/clsx-DB0hHKMi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cn-ldLVeaqm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/fullscreen-BmzAqMKq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-CyYN7zJg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/menu-items-BBdeXCvU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/use-restore-focus-B98SEiGc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/button-BoklZTGL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/createLucideIcon-rHn2EdoM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/check-Wea4hZ6R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/context-BFOBKCJB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useNumberFormatter-C4-_TnkF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/select-BplWpfFo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/circle-CeQt3rdW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/toast-KNfsFUiB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/tooltip-DR2Z2N4w.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/paths-CzfpItSz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useLifecycle-DKSBdWUf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/toDate-BbJ1_N2T.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/database-zap-CrkOvbyN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/alert-dialog-CeE3i3Qa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/arrays-BqUx5USx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/once-Haz_uxEL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/numbers-DsgsDslU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useDebounce-DMbg9X18.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/input-BDakodZ2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/use-toast-CC89xOwH.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/requests-yTHMxhVa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/uuid-k9DpjH68.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/write-secret-modal-CBUZw27N.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/plus-gbN72xHe.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/trash-2-BJG-7Qob.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/preload-helper-HclGiUj8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-BczecT6V.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-BTskHGpb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/capabilities-Bj3s1hGN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cjs-C49f7GXV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/createReducer-BPvK7C_R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-Ccyblc8N.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/marked.esm-B_3iMIUq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/strings-BHZPE0Mc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-BN-7G8qZ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/badge-DFf033uX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-CiUBikfn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-MRn68vX1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-Bviq_Dee.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-DBqBVprh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-DueXZKz9.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/stex-CJTNBbet.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useTheme-Ho3YdAx3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useAsyncData-DucTwMkf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/purify.es-CYRiAeUx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cells-BcQ8Tm3j.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/get-DjNf4SIX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/copy-RyCOE8jo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/copy-BhJktFeI.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/copy-icon-DFhUGBjO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/ErrorBoundary-DrliQ_7g.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/config-CMqNngzA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/chevron-right-DOPs2jx8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dropdown-menu-VuyoeQOD.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/LazyAnyLanguageCodeMirror-EBegnOE0.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/hat-glasses-DVgK5i5l.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/package-BeYhVWvM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/errors-D9vyuMar.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/defaultLocale-CNPGWpMu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/precisionRound-Bq_nmf5u.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/defaultLocale-D5bOh7g6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/vega-loader.browser-CLRkNgm7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/tooltip-B1vGi-z4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/micromark-factory-space-D9Dr-k4J.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/chunk-YOKDWASO-CaoEAGJk.js">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cells-0PFKL3SH.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/index-2TQenOiQ.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "# /// script\n# requires-python = \"\u003E=3.12\"\n# dependencies = [\n#     \"marimo\",\n#     \"numpy\",\n#     \"matplotlib\",\n# ]\n# ///\n\nimport marimo\n\n__generated_with = \"0.25.0\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell\ndef _():\n    import marimo as mo\n    import numpy as np\n    import matplotlib.pyplot as plt\n\n    return mo, np, plt\n\n\n@app.cell\ndef _(mo):\n    mo.md(\"\"\"\n    # Bootstrap Hypothesis Testing\n\n    Suppose we observe two samples *A* and *B* and want to know whether their means\n    differ significantly \u2014 but we do not want to assume a specific distribution.\n\n    **The bootstrap (permutation) approach:**\n    1. Compute the *observed* difference in means.\n    2. Under the null hypothesis (H\u2080: A and B come from the same distribution),\n       any labelling of observations as \"A\" or \"B\" is equally likely.\n    3. Combine A and B, then randomly relabel them thousands of times, recording the\n       difference in means each time. This builds the *null distribution*.\n    4. The **p-value** is the fraction of null-distribution differences that are\n       at least as extreme as the observed difference.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(mo):\n    mo.md(\"\"\"\n    ## Set up the two samples\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(mo):\n    delta_slider = mo.ui.slider(\n        0.80, 1.00, value=0.95, step=0.01,\n        label=\"Effect size \u03b4  (sample B = A \u00d7 \u03b4, so \u03b4 \u003C 1 means B is lower)\"\n    )\n    size_slider = mo.ui.slider(\n        10, 200, value=50, step=10, label=\"Sample size (n per group)\"\n    )\n    n_boot_slider = mo.ui.slider(\n        1000, 20000, value=8000, step=1000, label=\"Bootstrap replications\"\n    )\n    mo.vstack([delta_slider, size_slider, n_boot_slider])\n    return delta_slider, n_boot_slider, size_slider\n\n\n@app.cell\ndef _(delta_slider, n_boot_slider, np, plt, size_slider):\n    delta = delta_slider.value\n    n = size_slider.value\n    N_boot = n_boot_slider.value\n\n    # Generate samples: A ~ N(10, 1), B = A * delta\n    rng = np.random.default_rng()\n    A = 10.0 + rng.normal(0, 1, n)\n    B = A * delta\n\n    observed_diff = A.mean() - B.mean()\n\n    # Build null distribution via permutation (no-replacement split of combined sample)\n    AB = np.concatenate([A, B])\n    # Vectorised permutation: argsort of uniform noise gives random ordering\n    perm_indices = np.argsort(rng.uniform(size=(N_boot, 2 * n)), axis=1)\n    boot_diff = AB[perm_indices[:, :n]].mean(axis=1) - AB[perm_indices[:, n:]].mean(axis=1)\n\n    # Two-sided p-value\n    p_value = float(np.mean(np.abs(boot_diff) \u003E= np.abs(observed_diff)))\n\n    # \u2500\u2500 Plots \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    fig, axes = plt.subplots(1, 2, figsize=(12, 4))\n\n    # Left: the two raw samples\n    bins_shared = np.linspace(min(A.min(), B.min()) - 0.5, max(A.max(), B.max()) + 0.5, 30)\n    axes[0].hist(A, bins=bins_shared, alpha=0.6, color=\"steelblue\", label=\"Sample A\")\n    axes[0].hist(B, bins=bins_shared, alpha=0.6, color=\"coral\", label=\"Sample B\")\n    axes[0].axvline(A.mean(), color=\"steelblue\", lw=2, linestyle=\"--\",\n                    label=f\"Mean A = {A.mean():.3f}\")\n    axes[0].axvline(B.mean(), color=\"coral\", lw=2, linestyle=\"--\",\n                    label=f\"Mean B = {B.mean():.3f}\")\n    axes[0].set_xlabel(\"Value\")\n    axes[0].set_ylabel(\"Count\")\n    axes[0].set_title(f\"Raw samples (\u03b4 = {delta:.2f})\\nObserved difference = {observed_diff:.4f}\")\n    axes[0].legend(fontsize=8)\n\n    # Right: bootstrap null distribution\n    axes[1].hist(boot_diff, bins=60, density=True, alpha=0.7, color=\"silver\",\n                 label=\"Bootstrap differences (H\u2080)\")\n    axes[1].axvline(observed_diff, color=\"red\", lw=2,\n                    label=f\"Observed diff = {observed_diff:.4f}\")\n    axes[1].axvline(-observed_diff, color=\"red\", lw=2, linestyle=\"--\",\n                    label=f\"Mirror = {-observed_diff:.4f}\")\n    tail_color = \"red\"\n    tail_mask_pos = boot_diff \u003E= abs(observed_diff)\n    tail_mask_neg = boot_diff \u003C= -abs(observed_diff)\n    if tail_mask_pos.any():\n        axes[1].hist(boot_diff[tail_mask_pos], bins=60, density=True,\n                     alpha=0.5, color=tail_color)\n    if tail_mask_neg.any():\n        axes[1].hist(boot_diff[tail_mask_neg], bins=60, density=True,\n                     alpha=0.5, color=tail_color)\n    axes[1].set_xlabel(\"Difference in means (A \u2212 B) under H\u2080\")\n    axes[1].set_ylabel(\"Density\")\n    axes[1].set_title(f\"Bootstrap null distribution\\np-value = {p_value:.4f}\")\n    axes[1].legend(fontsize=8)\n\n    fig\n    return delta, n, observed_diff, p_value\n\n\n@app.cell\ndef _(delta, mo, n, observed_diff, p_value):\n    significance = (\n        f\"**significant** at the 5% level (p = {p_value:.4f} \u003C 0.05)\"\n        if p_value \u003C 0.05\n        else f\"**not significant** at the 5% level (p = {p_value:.4f} \u2265 0.05)\"\n    )\n    kind = \"success\" if p_value \u003C 0.05 else \"warn\"\n    mo.callout(\n        mo.md(\n            f\"\"\"\n            **Results with n = {n} and \u03b4 = {delta:.2f}:**\n\n            - Observed difference in means: **{observed_diff:.4f}**\n            - Bootstrap p-value (two-sided): **{p_value:.4f}**\n            - Conclusion: the difference is {significance}.\n\n            The red shaded region is the fraction of bootstrap differences that exceed\n            the observed value in absolute size \u2014 that fraction *is* the p-value.\n\n            Try dragging \u03b4 towards 1.0 to make the effect smaller and watch the p-value\n            rise above 0.05 (the difference becomes undetectable).\n            \"\"\"\n        ),\n        kind=kind,\n    )\n    return\n\n\n@app.cell\ndef _(mo):\n    mo.md(\"\"\"\n    ---\n    ## How does this compare to a t-test?\n\n    The classical Student's t-test also tests whether two means differ. It assumes both\n    samples are drawn from a normal distribution and uses an analytical formula for the\n    test statistic. The bootstrap makes **no distributional assumption** \u2014 it only requires\n    that the sample is representative of the population.\n\n    For large samples from roughly normal data, the two approaches give very similar\n    p-values. The bootstrap is more flexible when the normality assumption fails.\n    \"\"\")\n    return\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%0A%23%20%20%20%20%20%22marimo%22%2C%0A%23%20%20%20%20%20%22numpy%22%2C%0A%23%20%20%20%20%20%22matplotlib%22%2C%0A%23%20%5D%0A%23%20%2F%2F%2F%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.25.0%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%0A%20%20%20%20return%20mo%2C%20np%2C%20plt%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%20Bootstrap%20Hypothesis%20Testing%0A%0A%20%20%20%20Suppose%20we%20observe%20two%20samples%20*A*%20and%20*B*%20and%20want%20to%20know%20whether%20their%20means%0A%20%20%20%20differ%20significantly%20%E2%80%94%20but%20we%20do%20not%20want%20to%20assume%20a%20specific%20distribution.%0A%0A%20%20%20%20**The%20bootstrap%20(permutation)%20approach%3A**%0A%20%20%20%201.%20Compute%20the%20*observed*%20difference%20in%20means.%0A%20%20%20%202.%20Under%20the%20null%20hypothesis%20(H%E2%82%80%3A%20A%20and%20B%20come%20from%20the%20same%20distribution)%2C%0A%20%20%20%20%20%20%20any%20labelling%20of%20observations%20as%20%22A%22%20or%20%22B%22%20is%20equally%20likely.%0A%20%20%20%203.%20Combine%20A%20and%20B%2C%20then%20randomly%20relabel%20them%20thousands%20of%20times%2C%20recording%20the%0A%20%20%20%20%20%20%20difference%20in%20means%20each%20time.%20This%20builds%20the%20*null%20distribution*.%0A%20%20%20%204.%20The%20**p-value**%20is%20the%20fraction%20of%20null-distribution%20differences%20that%20are%0A%20%20%20%20%20%20%20at%20least%20as%20extreme%20as%20the%20observed%20difference.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20%23%23%20Set%20up%20the%20two%20samples%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20delta_slider%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%200.80%2C%201.00%2C%20value%3D0.95%2C%20step%3D0.01%2C%0A%20%20%20%20%20%20%20%20label%3D%22Effect%20size%20%CE%B4%20%20(sample%20B%20%3D%20A%20%C3%97%20%CE%B4%2C%20so%20%CE%B4%20%3C%201%20means%20B%20is%20lower)%22%0A%20%20%20%20)%0A%20%20%20%20size_slider%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%2010%2C%20200%2C%20value%3D50%2C%20step%3D10%2C%20label%3D%22Sample%20size%20(n%20per%20group)%22%0A%20%20%20%20)%0A%20%20%20%20n_boot_slider%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%201000%2C%2020000%2C%20value%3D8000%2C%20step%3D1000%2C%20label%3D%22Bootstrap%20replications%22%0A%20%20%20%20)%0A%20%20%20%20mo.vstack(%5Bdelta_slider%2C%20size_slider%2C%20n_boot_slider%5D)%0A%20%20%20%20return%20delta_slider%2C%20n_boot_slider%2C%20size_slider%0A%0A%0A%40app.cell%0Adef%20_(delta_slider%2C%20n_boot_slider%2C%20np%2C%20plt%2C%20size_slider)%3A%0A%20%20%20%20delta%20%3D%20delta_slider.value%0A%20%20%20%20n%20%3D%20size_slider.value%0A%20%20%20%20N_boot%20%3D%20n_boot_slider.value%0A%0A%20%20%20%20%23%20Generate%20samples%3A%20A%20~%20N(10%2C%201)%2C%20B%20%3D%20A%20*%20delta%0A%20%20%20%20rng%20%3D%20np.random.default_rng()%0A%20%20%20%20A%20%3D%2010.0%20%2B%20rng.normal(0%2C%201%2C%20n)%0A%20%20%20%20B%20%3D%20A%20*%20delta%0A%0A%20%20%20%20observed_diff%20%3D%20A.mean()%20-%20B.mean()%0A%0A%20%20%20%20%23%20Build%20null%20distribution%20via%20permutation%20(no-replacement%20split%20of%20combined%20sample)%0A%20%20%20%20AB%20%3D%20np.concatenate(%5BA%2C%20B%5D)%0A%20%20%20%20%23%20Vectorised%20permutation%3A%20argsort%20of%20uniform%20noise%20gives%20random%20ordering%0A%20%20%20%20perm_indices%20%3D%20np.argsort(rng.uniform(size%3D(N_boot%2C%202%20*%20n))%2C%20axis%3D1)%0A%20%20%20%20boot_diff%20%3D%20AB%5Bperm_indices%5B%3A%2C%20%3An%5D%5D.mean(axis%3D1)%20-%20AB%5Bperm_indices%5B%3A%2C%20n%3A%5D%5D.mean(axis%3D1)%0A%0A%20%20%20%20%23%20Two-sided%20p-value%0A%20%20%20%20p_value%20%3D%20float(np.mean(np.abs(boot_diff)%20%3E%3D%20np.abs(observed_diff)))%0A%0A%20%20%20%20%23%20%E2%94%80%E2%94%80%20Plots%20%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%0A%20%20%20%20fig%2C%20axes%20%3D%20plt.subplots(1%2C%202%2C%20figsize%3D(12%2C%204))%0A%0A%20%20%20%20%23%20Left%3A%20the%20two%20raw%20samples%0A%20%20%20%20bins_shared%20%3D%20np.linspace(min(A.min()%2C%20B.min())%20-%200.5%2C%20max(A.max()%2C%20B.max())%20%2B%200.5%2C%2030)%0A%20%20%20%20axes%5B0%5D.hist(A%2C%20bins%3Dbins_shared%2C%20alpha%3D0.6%2C%20color%3D%22steelblue%22%2C%20label%3D%22Sample%20A%22)%0A%20%20%20%20axes%5B0%5D.hist(B%2C%20bins%3Dbins_shared%2C%20alpha%3D0.6%2C%20color%3D%22coral%22%2C%20label%3D%22Sample%20B%22)%0A%20%20%20%20axes%5B0%5D.axvline(A.mean()%2C%20color%3D%22steelblue%22%2C%20lw%3D2%2C%20linestyle%3D%22--%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Df%22Mean%20A%20%3D%20%7BA.mean()%3A.3f%7D%22)%0A%20%20%20%20axes%5B0%5D.axvline(B.mean()%2C%20color%3D%22coral%22%2C%20lw%3D2%2C%20linestyle%3D%22--%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Df%22Mean%20B%20%3D%20%7BB.mean()%3A.3f%7D%22)%0A%20%20%20%20axes%5B0%5D.set_xlabel(%22Value%22)%0A%20%20%20%20axes%5B0%5D.set_ylabel(%22Count%22)%0A%20%20%20%20axes%5B0%5D.set_title(f%22Raw%20samples%20(%CE%B4%20%3D%20%7Bdelta%3A.2f%7D)%5CnObserved%20difference%20%3D%20%7Bobserved_diff%3A.4f%7D%22)%0A%20%20%20%20axes%5B0%5D.legend(fontsize%3D8)%0A%0A%20%20%20%20%23%20Right%3A%20bootstrap%20null%20distribution%0A%20%20%20%20axes%5B1%5D.hist(boot_diff%2C%20bins%3D60%2C%20density%3DTrue%2C%20alpha%3D0.7%2C%20color%3D%22silver%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22Bootstrap%20differences%20(H%E2%82%80)%22)%0A%20%20%20%20axes%5B1%5D.axvline(observed_diff%2C%20color%3D%22red%22%2C%20lw%3D2%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Df%22Observed%20diff%20%3D%20%7Bobserved_diff%3A.4f%7D%22)%0A%20%20%20%20axes%5B1%5D.axvline(-observed_diff%2C%20color%3D%22red%22%2C%20lw%3D2%2C%20linestyle%3D%22--%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Df%22Mirror%20%3D%20%7B-observed_diff%3A.4f%7D%22)%0A%20%20%20%20tail_color%20%3D%20%22red%22%0A%20%20%20%20tail_mask_pos%20%3D%20boot_diff%20%3E%3D%20abs(observed_diff)%0A%20%20%20%20tail_mask_neg%20%3D%20boot_diff%20%3C%3D%20-abs(observed_diff)%0A%20%20%20%20if%20tail_mask_pos.any()%3A%0A%20%20%20%20%20%20%20%20axes%5B1%5D.hist(boot_diff%5Btail_mask_pos%5D%2C%20bins%3D60%2C%20density%3DTrue%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alpha%3D0.5%2C%20color%3Dtail_color)%0A%20%20%20%20if%20tail_mask_neg.any()%3A%0A%20%20%20%20%20%20%20%20axes%5B1%5D.hist(boot_diff%5Btail_mask_neg%5D%2C%20bins%3D60%2C%20density%3DTrue%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20alpha%3D0.5%2C%20color%3Dtail_color)%0A%20%20%20%20axes%5B1%5D.set_xlabel(%22Difference%20in%20means%20(A%20%E2%88%92%20B)%20under%20H%E2%82%80%22)%0A%20%20%20%20axes%5B1%5D.set_ylabel(%22Density%22)%0A%20%20%20%20axes%5B1%5D.set_title(f%22Bootstrap%20null%20distribution%5Cnp-value%20%3D%20%7Bp_value%3A.4f%7D%22)%0A%20%20%20%20axes%5B1%5D.legend(fontsize%3D8)%0A%0A%20%20%20%20fig%0A%20%20%20%20return%20delta%2C%20n%2C%20observed_diff%2C%20p_value%0A%0A%0A%40app.cell%0Adef%20_(delta%2C%20mo%2C%20n%2C%20observed_diff%2C%20p_value)%3A%0A%20%20%20%20significance%20%3D%20(%0A%20%20%20%20%20%20%20%20f%22**significant**%20at%20the%205%25%20level%20(p%20%3D%20%7Bp_value%3A.4f%7D%20%3C%200.05)%22%0A%20%20%20%20%20%20%20%20if%20p_value%20%3C%200.05%0A%20%20%20%20%20%20%20%20else%20f%22**not%20significant**%20at%20the%205%25%20level%20(p%20%3D%20%7Bp_value%3A.4f%7D%20%E2%89%A5%200.05)%22%0A%20%20%20%20)%0A%20%20%20%20kind%20%3D%20%22success%22%20if%20p_value%20%3C%200.05%20else%20%22warn%22%0A%20%20%20%20mo.callout(%0A%20%20%20%20%20%20%20%20mo.md(%0A%20%20%20%20%20%20%20%20%20%20%20%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Results%20with%20n%20%3D%20%7Bn%7D%20and%20%CE%B4%20%3D%20%7Bdelta%3A.2f%7D%3A**%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20Observed%20difference%20in%20means%3A%20**%7Bobserved_diff%3A.4f%7D**%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20Bootstrap%20p-value%20(two-sided)%3A%20**%7Bp_value%3A.4f%7D**%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20Conclusion%3A%20the%20difference%20is%20%7Bsignificance%7D.%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20The%20red%20shaded%20region%20is%20the%20fraction%20of%20bootstrap%20differences%20that%20exceed%0A%20%20%20%20%20%20%20%20%20%20%20%20the%20observed%20value%20in%20absolute%20size%20%E2%80%94%20that%20fraction%20*is*%20the%20p-value.%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20Try%20dragging%20%CE%B4%20towards%201.0%20to%20make%20the%20effect%20smaller%20and%20watch%20the%20p-value%0A%20%20%20%20%20%20%20%20%20%20%20%20rise%20above%200.05%20(the%20difference%20becomes%20undetectable).%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20kind%3Dkind%2C%0A%20%20%20%20)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(%22%22%22%0A%20%20%20%20---%0A%20%20%20%20%23%23%20How%20does%20this%20compare%20to%20a%20t-test%3F%0A%0A%20%20%20%20The%20classical%20Student's%20t-test%20also%20tests%20whether%20two%20means%20differ.%20It%20assumes%20both%0A%20%20%20%20samples%20are%20drawn%20from%20a%20normal%20distribution%20and%20uses%20an%20analytical%20formula%20for%20the%0A%20%20%20%20test%20statistic.%20The%20bootstrap%20makes%20**no%20distributional%20assumption**%20%E2%80%94%20it%20only%20requires%0A%20%20%20%20that%20the%20sample%20is%20representative%20of%20the%20population.%0A%0A%20%20%20%20For%20large%20samples%20from%20roughly%20normal%20data%2C%20the%20two%20approaches%20give%20very%20similar%0A%20%20%20%20p-values.%20The%20bootstrap%20is%20more%20flexible%20when%20the%20normality%20assumption%20fails.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.25.0",
+            "serverToken": "unused",
+            "config": {"ai": {"allow_provider_config": true, "custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "code_lens": true, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "layout": null,
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>
