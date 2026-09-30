@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/apple-touch-icon.png" />
+    <link rel="manifest" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>lecture3 matrices</title>
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/index-CgQsZfww.js"></script>
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/rolldown-runtime-B0Z9INg1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/react-CUdNIagt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/compiler-runtime-BQ9S8nyo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useEvent-Dc9HkKI2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/react-dom-CKsE8sC1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/schemas-BL-NsLlF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/isObject-BCaOs5rp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/isSymbol-oX0TOjjx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/now-Cmx0b_zA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/debounce-aFmHgJZY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/isArrayLikeObject-DnwgSs_Z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/_baseMerge-CQpUq7ep.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/objects-snlMn4yk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/jsx-runtime-B74pBk57.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useEventListener-BdZUApHd.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/invariant-Ci2dTZ72.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/utils-B3E7otfg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/constants-BDbGiS7O.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/Deferred-CrTnjj37.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/session-C8nQMsOE.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/config-CmBpjGXk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/clsx-DB0hHKMi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cn-ldLVeaqm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/fullscreen-BmzAqMKq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-CyYN7zJg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/menu-items-BBdeXCvU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/use-restore-focus-B98SEiGc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/button-BoklZTGL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/createLucideIcon-rHn2EdoM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/check-Wea4hZ6R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/context-BFOBKCJB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useNumberFormatter-C4-_TnkF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/select-BplWpfFo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/circle-CeQt3rdW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/toast-KNfsFUiB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/tooltip-DR2Z2N4w.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/paths-CzfpItSz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useLifecycle-DKSBdWUf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/toDate-BbJ1_N2T.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/database-zap-CrkOvbyN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/alert-dialog-CeE3i3Qa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/arrays-BqUx5USx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/once-Haz_uxEL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/numbers-DsgsDslU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useDebounce-DMbg9X18.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/input-BDakodZ2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/use-toast-CC89xOwH.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/requests-yTHMxhVa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/uuid-k9DpjH68.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/write-secret-modal-CBUZw27N.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/plus-gbN72xHe.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/trash-2-BJG-7Qob.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/preload-helper-HclGiUj8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-BczecT6V.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-BTskHGpb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/capabilities-Bj3s1hGN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cjs-C49f7GXV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/createReducer-BPvK7C_R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-Ccyblc8N.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/marked.esm-B_3iMIUq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/strings-BHZPE0Mc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-BN-7G8qZ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/badge-DFf033uX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-CiUBikfn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-MRn68vX1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-Bviq_Dee.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-DBqBVprh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dist-DueXZKz9.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/stex-CJTNBbet.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useTheme-Ho3YdAx3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/useAsyncData-DucTwMkf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/purify.es-CYRiAeUx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cells-BcQ8Tm3j.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/get-DjNf4SIX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/copy-RyCOE8jo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/copy-BhJktFeI.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/copy-icon-DFhUGBjO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/ErrorBoundary-DrliQ_7g.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/config-CMqNngzA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/chevron-right-DOPs2jx8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/dropdown-menu-VuyoeQOD.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/LazyAnyLanguageCodeMirror-EBegnOE0.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/hat-glasses-DVgK5i5l.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/package-BeYhVWvM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/errors-D9vyuMar.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/defaultLocale-CNPGWpMu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/precisionRound-Bq_nmf5u.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/defaultLocale-D5bOh7g6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/vega-loader.browser-CLRkNgm7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/tooltip-B1vGi-z4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/micromark-factory-space-D9Dr-k4J.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/chunk-YOKDWASO-CaoEAGJk.js">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/cells-0PFKL3SH.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.0/dist/assets/index-2TQenOiQ.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "# /// script\n# requires-python = \"\u003E=3.12\"\n# dependencies = [\n#     \"marimo\",\n#     \"numpy\",\n# ]\n# ///\n\nimport marimo\n\n__generated_with = \"0.25.0\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell\ndef _():\n    import marimo as mo\n    import numpy as np\n\n    return mo, np\n\n\n@app.cell\ndef _(mo):\n    mo.md(r\"\"\"\n    # Interactive Matrix Operations\n\n    Enter values in the two $3 \\times 3$ matrices $A$ and $B$ below via:\n\n    - (implicit) sliders to change values or\n    - double click the number and type the value you want.\n\n    The app computes several matrix operations in real time. Addition and subtraction are obvious, matrix multiplication you have (hopefully) seen before (if not, check out the [wikipedia page](https://en.wikipedia.org/wiki/Matrix_multiplication)), $A^T$ \"reverses\" rows and columns and the inverse $A^{-1}$ is defined as $A^{-1} A = I$, where $I$ is the identity matrix. The inverse only exists if the matrix has full rank, that is all rows are independent. A quick way to check whether a matrix is invertible is to compute its determinant: if the determinant is nonzero, the inverse exists.\n\n    **Try this:** make one row of matrix $A$ equal to a multiple of another row; the determinant will drop to zero and the inverse becomes undefined.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(mo):\n    A_ui = mo.ui.matrix(\n        [[2, 1, 0], [1, 3, 1], [0, 1, 2]],\n        label=\"Matrix A\",\n    )\n    B_ui = mo.ui.matrix(\n        [[1, 0, 0], [0, 2, 0], [0, 0, 3]],\n        label=\"Matrix B\",\n    )\n    mo.hstack([A_ui, B_ui], gap=1)\n    return A_ui, B_ui\n\n\n@app.cell\ndef _(A_ui, B_ui, np):\n    A = np.array(A_ui.value, dtype=float)\n    B = np.array(B_ui.value, dtype=float)\n\n    rank_A = int(np.linalg.matrix_rank(A))\n    det_A  = float(np.linalg.det(A))\n    full_rank_A = (rank_A == 3)\n    A_inv  = np.linalg.inv(A) if full_rank_A else None\n    return A, A_inv, B, det_A, full_rank_A, rank_A\n\n\n@app.cell\ndef _(A, A_inv, B, det_A, full_rank_A, mo, np, rank_A):\n    def fmt(arr, label):\n        s = np.array2string(arr, precision=3, suppress_small=True,\n                            floatmode=\"fixed\")\n        return f\"**{label}**\\n```\\n{s}\\n```\"\n\n    if full_rank_A:\n        inv_block = fmt(A_inv, \"A\u207b\u00b9  (inverse of A)\")\n    else:\n        inv_block = (\n            f\"**A\u207b\u00b9 \u2014 not defined**\\n\\n\"\n            f\"Rank of A = {rank_A} \u003C 3.  \"\n            f\"At least one row is a linear combination of the others, \"\n            f\"so det(A) \u2248 0 and A cannot be inverted.\"\n        )\n\n    mo.vstack([\n        mo.hstack([\n            mo.md(fmt(A + B, \"A + B\")),\n            mo.md(fmt(A - B, \"A \u2212 B\")),\n        ], gap=3),\n        mo.hstack([\n            mo.md(fmt(A @ B, \"A @ B  (matrix product)\")),\n            mo.md(fmt(B @ A, \"B @ A  (note: \u2260 A @ B in general)\")),\n        ], gap=3),\n        mo.hstack([\n            mo.md(fmt(A.T, \"A\u1d40  (transpose)\")),\n            mo.md(\n                f\"**Rank:** {rank_A} / 3   |   \"\n                f\"**det(A):** {det_A:.4f}\\n\\n{inv_block}\"\n            ),\n        ], gap=3),\n    ])\n    return\n\n\n@app.cell\ndef _(A_inv, det_A, full_rank_A, mo, np, rank_A):\n    if full_rank_A:\n        # Verify A @ A_inv \u2248 I\n        I_approx = np.linalg.norm(np.eye(3) - np.array(A_inv) @ np.eye(3))\n        kind = \"success\"\n        body = f\"\"\"\n            **Matrix A has full rank ({rank_A}/3)** \u2014 the inverse exists.\n\n            - det(A) = **{det_A:.4f}** (non-zero confirms invertibility)\n            - A square matrix is invertible if and only if its rows (and columns)\n              are linearly independent \u2014 equivalently, det(A) \u2260 0 and rank = n.\n\n            Change A so that one row is a multiple of another to see the inverse\n            become undefined.\n            \"\"\"\n    else:\n        kind = \"warn\"\n        body = f\"\"\"\n            **Matrix A is rank-deficient (rank = {rank_A}/3)** \u2014 the inverse does not exist.\n\n            - det(A) = **{det_A:.4f}** (zero or near-zero)\n            - The system $A x = b$ may have no solution or infinitely many.\n            - In statistics this corresponds to **perfect multicollinearity**:\n              one predictor is a linear combination of the others, making OLS\n              ill-defined.\n            \"\"\"\n\n    mo.callout(mo.md(body), kind=kind)\n    return\n\n\n@app.cell(hide_code=True)\ndef _(mo):\n    mo.md(r\"\"\"\n    If the inverse of matrix $A$ exists, we can solve a system of equations $A x = b$ as $x = A^{-1}b$.\n\n    In previous lectures we have seen this in the context of OLS, where the first order condition (of minimizing the sum of squared residuals) can be written as $X^\\top X \\hat\\beta = X^\\top y$, giving\n    \\[\n    \\hat\\beta = (X^\\top X)^{-1}X^\\top y\n    \\]\n    when $X^\\top X$ is invertible. In case of multicollinearity the matrix $X^\\top X$ is not invertible, so the inverse does not exist. In this case your statistical software will give a warning or even an error.\n    \"\"\")\n    return\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%0A%23%20%20%20%20%20%22marimo%22%2C%0A%23%20%20%20%20%20%22numpy%22%2C%0A%23%20%5D%0A%23%20%2F%2F%2F%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.25.0%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20numpy%20as%20np%0A%0A%20%20%20%20return%20mo%2C%20np%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Interactive%20Matrix%20Operations%0A%0A%20%20%20%20Enter%20values%20in%20the%20two%20%243%20%5Ctimes%203%24%20matrices%20%24A%24%20and%20%24B%24%20below%20via%3A%0A%0A%20%20%20%20-%20(implicit)%20sliders%20to%20change%20values%20or%0A%20%20%20%20-%20double%20click%20the%20number%20and%20type%20the%20value%20you%20want.%0A%0A%20%20%20%20The%20app%20computes%20several%20matrix%20operations%20in%20real%20time.%20Addition%20and%20subtraction%20are%20obvious%2C%20matrix%20multiplication%20you%20have%20(hopefully)%20seen%20before%20(if%20not%2C%20check%20out%20the%20%5Bwikipedia%20page%5D(https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FMatrix_multiplication))%2C%20%24A%5ET%24%20%22reverses%22%20rows%20and%20columns%20and%20the%20inverse%20%24A%5E%7B-1%7D%24%20is%20defined%20as%20%24A%5E%7B-1%7D%20A%20%3D%20I%24%2C%20where%20%24I%24%20is%20the%20identity%20matrix.%20The%20inverse%20only%20exists%20if%20the%20matrix%20has%20full%20rank%2C%20that%20is%20all%20rows%20are%20independent.%20A%20quick%20way%20to%20check%20whether%20a%20matrix%20is%20invertible%20is%20to%20compute%20its%20determinant%3A%20if%20the%20determinant%20is%20nonzero%2C%20the%20inverse%20exists.%0A%0A%20%20%20%20**Try%20this%3A**%20make%20one%20row%20of%20matrix%20%24A%24%20equal%20to%20a%20multiple%20of%20another%20row%3B%20the%20determinant%20will%20drop%20to%20zero%20and%20the%20inverse%20becomes%20undefined.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20A_ui%20%3D%20mo.ui.matrix(%0A%20%20%20%20%20%20%20%20%5B%5B2%2C%201%2C%200%5D%2C%20%5B1%2C%203%2C%201%5D%2C%20%5B0%2C%201%2C%202%5D%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Matrix%20A%22%2C%0A%20%20%20%20)%0A%20%20%20%20B_ui%20%3D%20mo.ui.matrix(%0A%20%20%20%20%20%20%20%20%5B%5B1%2C%200%2C%200%5D%2C%20%5B0%2C%202%2C%200%5D%2C%20%5B0%2C%200%2C%203%5D%5D%2C%0A%20%20%20%20%20%20%20%20label%3D%22Matrix%20B%22%2C%0A%20%20%20%20)%0A%20%20%20%20mo.hstack(%5BA_ui%2C%20B_ui%5D%2C%20gap%3D1)%0A%20%20%20%20return%20A_ui%2C%20B_ui%0A%0A%0A%40app.cell%0Adef%20_(A_ui%2C%20B_ui%2C%20np)%3A%0A%20%20%20%20A%20%3D%20np.array(A_ui.value%2C%20dtype%3Dfloat)%0A%20%20%20%20B%20%3D%20np.array(B_ui.value%2C%20dtype%3Dfloat)%0A%0A%20%20%20%20rank_A%20%3D%20int(np.linalg.matrix_rank(A))%0A%20%20%20%20det_A%20%20%3D%20float(np.linalg.det(A))%0A%20%20%20%20full_rank_A%20%3D%20(rank_A%20%3D%3D%203)%0A%20%20%20%20A_inv%20%20%3D%20np.linalg.inv(A)%20if%20full_rank_A%20else%20None%0A%20%20%20%20return%20A%2C%20A_inv%2C%20B%2C%20det_A%2C%20full_rank_A%2C%20rank_A%0A%0A%0A%40app.cell%0Adef%20_(A%2C%20A_inv%2C%20B%2C%20det_A%2C%20full_rank_A%2C%20mo%2C%20np%2C%20rank_A)%3A%0A%20%20%20%20def%20fmt(arr%2C%20label)%3A%0A%20%20%20%20%20%20%20%20s%20%3D%20np.array2string(arr%2C%20precision%3D3%2C%20suppress_small%3DTrue%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20floatmode%3D%22fixed%22)%0A%20%20%20%20%20%20%20%20return%20f%22**%7Blabel%7D**%5Cn%60%60%60%5Cn%7Bs%7D%5Cn%60%60%60%22%0A%0A%20%20%20%20if%20full_rank_A%3A%0A%20%20%20%20%20%20%20%20inv_block%20%3D%20fmt(A_inv%2C%20%22A%E2%81%BB%C2%B9%20%20(inverse%20of%20A)%22)%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20inv_block%20%3D%20(%0A%20%20%20%20%20%20%20%20%20%20%20%20f%22**A%E2%81%BB%C2%B9%20%E2%80%94%20not%20defined**%5Cn%5Cn%22%0A%20%20%20%20%20%20%20%20%20%20%20%20f%22Rank%20of%20A%20%3D%20%7Brank_A%7D%20%3C%203.%20%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20f%22At%20least%20one%20row%20is%20a%20linear%20combination%20of%20the%20others%2C%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20f%22so%20det(A)%20%E2%89%88%200%20and%20A%20cannot%20be%20inverted.%22%0A%20%20%20%20%20%20%20%20)%0A%0A%20%20%20%20mo.vstack(%5B%0A%20%20%20%20%20%20%20%20mo.hstack(%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(fmt(A%20%2B%20B%2C%20%22A%20%2B%20B%22))%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(fmt(A%20-%20B%2C%20%22A%20%E2%88%92%20B%22))%2C%0A%20%20%20%20%20%20%20%20%5D%2C%20gap%3D3)%2C%0A%20%20%20%20%20%20%20%20mo.hstack(%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(fmt(A%20%40%20B%2C%20%22A%20%40%20B%20%20(matrix%20product)%22))%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(fmt(B%20%40%20A%2C%20%22B%20%40%20A%20%20(note%3A%20%E2%89%A0%20A%20%40%20B%20in%20general)%22))%2C%0A%20%20%20%20%20%20%20%20%5D%2C%20gap%3D3)%2C%0A%20%20%20%20%20%20%20%20mo.hstack(%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(fmt(A.T%2C%20%22A%E1%B5%80%20%20(transpose)%22))%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20mo.md(%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20f%22**Rank%3A**%20%7Brank_A%7D%20%2F%203%20%20%20%7C%20%20%20%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20f%22**det(A)%3A**%20%7Bdet_A%3A.4f%7D%5Cn%5Cn%7Binv_block%7D%22%0A%20%20%20%20%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20%5D%2C%20gap%3D3)%2C%0A%20%20%20%20%5D)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(A_inv%2C%20det_A%2C%20full_rank_A%2C%20mo%2C%20np%2C%20rank_A)%3A%0A%20%20%20%20if%20full_rank_A%3A%0A%20%20%20%20%20%20%20%20%23%20Verify%20A%20%40%20A_inv%20%E2%89%88%20I%0A%20%20%20%20%20%20%20%20I_approx%20%3D%20np.linalg.norm(np.eye(3)%20-%20np.array(A_inv)%20%40%20np.eye(3))%0A%20%20%20%20%20%20%20%20kind%20%3D%20%22success%22%0A%20%20%20%20%20%20%20%20body%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Matrix%20A%20has%20full%20rank%20(%7Brank_A%7D%2F3)**%20%E2%80%94%20the%20inverse%20exists.%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20det(A)%20%3D%20**%7Bdet_A%3A.4f%7D**%20(non-zero%20confirms%20invertibility)%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20A%20square%20matrix%20is%20invertible%20if%20and%20only%20if%20its%20rows%20(and%20columns)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20are%20linearly%20independent%20%E2%80%94%20equivalently%2C%20det(A)%20%E2%89%A0%200%20and%20rank%20%3D%20n.%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20Change%20A%20so%20that%20one%20row%20is%20a%20multiple%20of%20another%20to%20see%20the%20inverse%0A%20%20%20%20%20%20%20%20%20%20%20%20become%20undefined.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20kind%20%3D%20%22warn%22%0A%20%20%20%20%20%20%20%20body%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Matrix%20A%20is%20rank-deficient%20(rank%20%3D%20%7Brank_A%7D%2F3)**%20%E2%80%94%20the%20inverse%20does%20not%20exist.%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20det(A)%20%3D%20**%7Bdet_A%3A.4f%7D**%20(zero%20or%20near-zero)%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20The%20system%20%24A%20x%20%3D%20b%24%20may%20have%20no%20solution%20or%20infinitely%20many.%0A%20%20%20%20%20%20%20%20%20%20%20%20-%20In%20statistics%20this%20corresponds%20to%20**perfect%20multicollinearity**%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20one%20predictor%20is%20a%20linear%20combination%20of%20the%20others%2C%20making%20OLS%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20ill-defined.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%0A%20%20%20%20mo.callout(mo.md(body)%2C%20kind%3Dkind)%0A%20%20%20%20return%0A%0A%0A%40app.cell(hide_code%3DTrue)%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20If%20the%20inverse%20of%20matrix%20%24A%24%20exists%2C%20we%20can%20solve%20a%20system%20of%20equations%20%24A%20x%20%3D%20b%24%20as%20%24x%20%3D%20A%5E%7B-1%7Db%24.%0A%0A%20%20%20%20In%20previous%20lectures%20we%20have%20seen%20this%20in%20the%20context%20of%20OLS%2C%20where%20the%20first%20order%20condition%20(of%20minimizing%20the%20sum%20of%20squared%20residuals)%20can%20be%20written%20as%20%24X%5E%5Ctop%20X%20%5Chat%5Cbeta%20%3D%20X%5E%5Ctop%20y%24%2C%20giving%0A%20%20%20%20%5C%5B%0A%20%20%20%20%5Chat%5Cbeta%20%3D%20(X%5E%5Ctop%20X)%5E%7B-1%7DX%5E%5Ctop%20y%0A%20%20%20%20%5C%5D%0A%20%20%20%20when%20%24X%5E%5Ctop%20X%24%20is%20invertible.%20In%20case%20of%20multicollinearity%20the%20matrix%20%24X%5E%5Ctop%20X%24%20is%20not%20invertible%2C%20so%20the%20inverse%20does%20not%20exist.%20In%20this%20case%20your%20statistical%20software%20will%20give%20a%20warning%20or%20even%20an%20error.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.25.0",
+            "serverToken": "unused",
+            "config": {"ai": {"allow_provider_config": true, "custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "code_lens": true, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "layout": null,
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>
