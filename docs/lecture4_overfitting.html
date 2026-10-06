@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/apple-touch-icon.png" />
+    <link rel="manifest" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>lecture4 overfitting</title>
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/index-DafnX1Xx.js"></script>
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/rolldown-runtime-B0Z9INg1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/react-CUdNIagt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/compiler-runtime-BQ9S8nyo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useEvent-Dc9HkKI2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/react-dom-CKsE8sC1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/schemas-BL-NsLlF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/isObject-BCaOs5rp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/isSymbol-oX0TOjjx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/now-Cmx0b_zA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/debounce-aFmHgJZY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/isArrayLikeObject-DnwgSs_Z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/_baseMerge-CQpUq7ep.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/objects-snlMn4yk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/jsx-runtime-B74pBk57.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useEventListener-BdZUApHd.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/invariant-Ci2dTZ72.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/config-BxZgoFvi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/utils-B4K466FK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/session-DXKMv4Bs.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/Deferred-CrTnjj37.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/config-DpGPGznL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/clsx-DB0hHKMi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cn-ldLVeaqm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/fullscreen-BmzAqMKq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-CyYN7zJg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/menu-items-BBdeXCvU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/use-restore-focus-B98SEiGc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/button-BoklZTGL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/createLucideIcon-rHn2EdoM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/check-Wea4hZ6R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/context-BFOBKCJB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useNumberFormatter-C4-_TnkF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/select-BplWpfFo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/circle-CeQt3rdW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/toast-KNfsFUiB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/tooltip-DR2Z2N4w.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/paths-CzfpItSz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useLifecycle-DKSBdWUf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/toDate-BbJ1_N2T.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/database-zap-CrkOvbyN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/alert-dialog-CeE3i3Qa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/arrays-BqUx5USx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/once-Haz_uxEL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/numbers-DsgsDslU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useDebounce-DMbg9X18.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/input-BDakodZ2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/use-toast-CC89xOwH.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/requests-yTHMxhVa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/uuid-k9DpjH68.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/write-secret-modal-BiG2tahJ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/plus-gbN72xHe.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/trash-2-BJG-7Qob.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/preload-helper-HclGiUj8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-BczecT6V.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-BTskHGpb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/capabilities-Bj3s1hGN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cjs-C49f7GXV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/createReducer-BPvK7C_R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-Ccyblc8N.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/marked.esm-B_3iMIUq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/strings-BHZPE0Mc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-BN-7G8qZ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/badge-DFf033uX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-CiUBikfn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-MRn68vX1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-Bviq_Dee.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-DBqBVprh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-DueXZKz9.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/stex-CJTNBbet.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useTheme-DcnXlv0_.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useAsyncData-DucTwMkf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/purify.es-CYRiAeUx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cells-CzugpTQu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/get-DjNf4SIX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/copy-RyCOE8jo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/copy-BhJktFeI.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/copy-icon-DFhUGBjO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/ErrorBoundary-BeE1cdgM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/config-B4VJJibu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/chevron-right-DOPs2jx8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dropdown-menu-VuyoeQOD.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/LazyAnyLanguageCodeMirror-B_IYTCX5.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/hat-glasses-DVgK5i5l.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/package-BeYhVWvM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/errors-D9vyuMar.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/defaultLocale-CNPGWpMu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/precisionRound-Bq_nmf5u.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/defaultLocale-D5bOh7g6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/vega-loader.browser-CLRkNgm7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/tooltip-PLkI_UfK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/filename-fxG7K_MU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/micromark-factory-space-D9Dr-k4J.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/chunk-YOKDWASO-CaoEAGJk.js">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cells-0PFKL3SH.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/index--sT8xf-8.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "# /// script\n# requires-python = \"\u003E=3.12\"\n# dependencies = [\n#     \"marimo\",\n#     \"numpy\",\n#     \"matplotlib\",\n# ]\n# ///\n\nimport marimo\n\n__generated_with = \"0.25.1\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell\ndef _():\n    import marimo as mo\n    import numpy as np\n    import matplotlib.pyplot as plt\n\n    return mo, np, plt\n\n\n@app.cell\ndef _(mo):\n    mo.md(r\"\"\"\n    # Overfitting and Underfitting: Polynomial Regression Example\n\n    We generate 30 observations from the **true model**\n\n    $$y = 1 + 2x^2 + \\varepsilon, \\quad \\varepsilon \\sim \\mathcal{N}(0,\\, 1.5)$$\n\n    The first 20 observations form the **train set** (blue); the last 10 form the **test set** (orange).\n    We fit a polynomial of degree $d$ to the *training data only*, then evaluate on both sets using mean squared error (MSE).\n\n    Use the slider to vary $d$:\n    - **Train MSE** decreases monotonically as $d$ grows \u2014 adding parameters can only improve the fit\n      on the data used for estimation.\n    - **Test MSE** first falls (the model captures the true quadratic shape), then **rises**: the polynomial\n      starts fitting the noise in the training sample instead of the underlying signal.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(mo):\n    degree_slider = mo.ui.slider(1, 9, value=2, step=1, label=\"Polynomial degree (d)\")\n    degree_slider\n    return (degree_slider,)\n\n\n@app.cell\ndef _(np):\n    _rng = np.random.default_rng(42)\n    _N, _n_train = 30, 20\n    x_all   = np.sort(_rng.uniform(-2.0, 2.0, _N))\n    y_all   = 1.0 + 2.0 * x_all ** 2 + _rng.normal(0, 1.5, _N)\n    x_train = x_all[:_n_train]\n    y_train = y_all[:_n_train]\n    x_test  = x_all[_n_train:]\n    y_test  = y_all[_n_train:]\n    x_curve = np.linspace(-2.2, 2.2, 400)\n    return x_all, x_curve, x_test, x_train, y_all, y_test, y_train\n\n\n@app.cell\ndef _(degree_slider, np, x_curve, x_test, x_train, y_test, y_train):\n    d = degree_slider.value\n    coeffs = np.polyfit(x_train, y_train, d)\n    poly   = np.poly1d(coeffs)\n    y_fit  = poly(x_curve)\n    train_mse = float(np.mean((y_train - poly(x_train)) ** 2))\n    test_mse  = float(np.mean((y_test  - poly(x_test))  ** 2))\n    return d, test_mse, train_mse, y_fit\n\n\n@app.cell\ndef _(d, plt, x_all, x_curve, y_all, y_fit):\n    fig_all, ax_all = plt.subplots(figsize=(9, 4))\n    ax_all.scatter(x_all[:20], y_all[:20], color=\"steelblue\", s=55, alpha=0.85,\n                   label=\"Train data (n=20)\")\n    ax_all.scatter(x_all[20:], y_all[20:], color=\"darkorange\", s=55, alpha=0.85,\n                   label=\"Test data (n=10)\")\n    ax_all.plot(x_curve, y_fit, color=\"crimson\", lw=2.2, label=f\"Degree-{d} fit\")\n    ax_all.set_xlim(-2.3, 2.3)\n    ax_all.set_ylim(-2, 16)\n    ax_all.set_xlabel(\"x\")\n    ax_all.set_ylabel(\"y\")\n    ax_all.set_title(f\"All 30 observations with degree-{d} polynomial fitted on training data only\")\n    ax_all.legend(fontsize=9)\n    plt.tight_layout()\n    fig_all\n    return\n\n\n@app.cell\ndef _(\n    d,\n    plt,\n    test_mse,\n    train_mse,\n    x_curve,\n    x_test,\n    x_train,\n    y_fit,\n    y_test,\n    y_train,\n):\n    fig_tt, (ax_tr, ax_te) = plt.subplots(1, 2, figsize=(12, 4.5), sharey=True)\n\n    ax_tr.scatter(x_train, y_train, color=\"steelblue\", s=60, alpha=0.85)\n    ax_tr.plot(x_curve, y_fit, color=\"crimson\", lw=2.2)\n    ax_tr.set_xlim(-2.3, 2.3)\n    ax_tr.set_ylim(-2, 16)\n    ax_tr.set_xlabel(\"x\")\n    ax_tr.set_ylabel(\"y\")\n    ax_tr.set_title(f\"Train set \u2014 MSE = {train_mse:.2f}\")\n\n    ax_te.scatter(x_test, y_test, color=\"darkorange\", s=60, alpha=0.85)\n    ax_te.plot(x_curve, y_fit, color=\"crimson\", lw=2.2)\n    ax_te.set_xlim(-2.3, 2.3)\n    ax_te.set_ylim(-2, 16)\n    ax_te.set_xlabel(\"x\")\n    ax_te.set_title(f\"Test set \u2014 MSE = {test_mse:.2f}\")\n\n    plt.suptitle(\n        f\"Degree {d}: as degree increases, train MSE \u2193  but  test MSE \u2191\",\n        fontsize=11, fontweight=\"bold\", y=1.01,\n    )\n    plt.tight_layout()\n    fig_tt\n    return\n\n\n@app.cell\ndef _(d, mo, test_mse, train_mse):\n    if d \u003C= 1:\n        kind = \"info\"\n        body = f\"\"\"\n            **Underfitting** (degree {d}) \u2014 Train MSE = {train_mse:.2f},  Test MSE = {test_mse:.2f}\n\n            A degree-1 line cannot capture the true quadratic signal.  Both errors are high.\n            Increase the degree toward 2 to see both errors fall.\n            \"\"\"\n    elif test_mse \u003E 6.0:\n        kind = \"warn\"\n        body = f\"\"\"\n            **Overfitting** (degree {d}) \u2014 Train MSE = {train_mse:.2f},  Test MSE = {test_mse:.2f}\n\n            The polynomial fits the training noise closely but predicts the test set poorly.\n            The model has memorised the 20 training points rather than the underlying $y = 1 + 2x^2$ pattern.\n            \"\"\"\n    else:\n        kind = \"success\"\n        body = f\"\"\"\n            **Reasonable fit** (degree {d}) \u2014 Train MSE = {train_mse:.2f},  Test MSE = {test_mse:.2f}\n\n            The polynomial captures the true quadratic shape without chasing too much noise.\n            The irreducible noise variance is $\\\\sigma^2 = 2.25$, so the best achievable test MSE\n            is around 2.25.\n            \"\"\"\n    mo.callout(mo.md(body), kind=kind)\n    return\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%0A%23%20%20%20%20%20%22marimo%22%2C%0A%23%20%20%20%20%20%22numpy%22%2C%0A%23%20%20%20%20%20%22matplotlib%22%2C%0A%23%20%5D%0A%23%20%2F%2F%2F%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.25.1%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%0A%20%20%20%20return%20mo%2C%20np%2C%20plt%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Overfitting%20and%20Underfitting%3A%20Polynomial%20Regression%20Example%0A%0A%20%20%20%20We%20generate%2030%20observations%20from%20the%20**true%20model**%0A%0A%20%20%20%20%24%24y%20%3D%201%20%2B%202x%5E2%20%2B%20%5Cvarepsilon%2C%20%5Cquad%20%5Cvarepsilon%20%5Csim%20%5Cmathcal%7BN%7D(0%2C%5C%2C%201.5)%24%24%0A%0A%20%20%20%20The%20first%2020%20observations%20form%20the%20**train%20set**%20(blue)%3B%20the%20last%2010%20form%20the%20**test%20set**%20(orange).%0A%20%20%20%20We%20fit%20a%20polynomial%20of%20degree%20%24d%24%20to%20the%20*training%20data%20only*%2C%20then%20evaluate%20on%20both%20sets%20using%20mean%20squared%20error%20(MSE).%0A%0A%20%20%20%20Use%20the%20slider%20to%20vary%20%24d%24%3A%0A%20%20%20%20-%20**Train%20MSE**%20decreases%20monotonically%20as%20%24d%24%20grows%20%E2%80%94%20adding%20parameters%20can%20only%20improve%20the%20fit%0A%20%20%20%20%20%20on%20the%20data%20used%20for%20estimation.%0A%20%20%20%20-%20**Test%20MSE**%20first%20falls%20(the%20model%20captures%20the%20true%20quadratic%20shape)%2C%20then%20**rises**%3A%20the%20polynomial%0A%20%20%20%20%20%20starts%20fitting%20the%20noise%20in%20the%20training%20sample%20instead%20of%20the%20underlying%20signal.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20degree_slider%20%3D%20mo.ui.slider(1%2C%209%2C%20value%3D2%2C%20step%3D1%2C%20label%3D%22Polynomial%20degree%20(d)%22)%0A%20%20%20%20degree_slider%0A%20%20%20%20return%20(degree_slider%2C)%0A%0A%0A%40app.cell%0Adef%20_(np)%3A%0A%20%20%20%20_rng%20%3D%20np.random.default_rng(42)%0A%20%20%20%20_N%2C%20_n_train%20%3D%2030%2C%2020%0A%20%20%20%20x_all%20%20%20%3D%20np.sort(_rng.uniform(-2.0%2C%202.0%2C%20_N))%0A%20%20%20%20y_all%20%20%20%3D%201.0%20%2B%202.0%20*%20x_all%20**%202%20%2B%20_rng.normal(0%2C%201.5%2C%20_N)%0A%20%20%20%20x_train%20%3D%20x_all%5B%3A_n_train%5D%0A%20%20%20%20y_train%20%3D%20y_all%5B%3A_n_train%5D%0A%20%20%20%20x_test%20%20%3D%20x_all%5B_n_train%3A%5D%0A%20%20%20%20y_test%20%20%3D%20y_all%5B_n_train%3A%5D%0A%20%20%20%20x_curve%20%3D%20np.linspace(-2.2%2C%202.2%2C%20400)%0A%20%20%20%20return%20x_all%2C%20x_curve%2C%20x_test%2C%20x_train%2C%20y_all%2C%20y_test%2C%20y_train%0A%0A%0A%40app.cell%0Adef%20_(degree_slider%2C%20np%2C%20x_curve%2C%20x_test%2C%20x_train%2C%20y_test%2C%20y_train)%3A%0A%20%20%20%20d%20%3D%20degree_slider.value%0A%20%20%20%20coeffs%20%3D%20np.polyfit(x_train%2C%20y_train%2C%20d)%0A%20%20%20%20poly%20%20%20%3D%20np.poly1d(coeffs)%0A%20%20%20%20y_fit%20%20%3D%20poly(x_curve)%0A%20%20%20%20train_mse%20%3D%20float(np.mean((y_train%20-%20poly(x_train))%20**%202))%0A%20%20%20%20test_mse%20%20%3D%20float(np.mean((y_test%20%20-%20poly(x_test))%20%20**%202))%0A%20%20%20%20return%20d%2C%20test_mse%2C%20train_mse%2C%20y_fit%0A%0A%0A%40app.cell%0Adef%20_(d%2C%20plt%2C%20x_all%2C%20x_curve%2C%20y_all%2C%20y_fit)%3A%0A%20%20%20%20fig_all%2C%20ax_all%20%3D%20plt.subplots(figsize%3D(9%2C%204))%0A%20%20%20%20ax_all.scatter(x_all%5B%3A20%5D%2C%20y_all%5B%3A20%5D%2C%20color%3D%22steelblue%22%2C%20s%3D55%2C%20alpha%3D0.85%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22Train%20data%20(n%3D20)%22)%0A%20%20%20%20ax_all.scatter(x_all%5B20%3A%5D%2C%20y_all%5B20%3A%5D%2C%20color%3D%22darkorange%22%2C%20s%3D55%2C%20alpha%3D0.85%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22Test%20data%20(n%3D10)%22)%0A%20%20%20%20ax_all.plot(x_curve%2C%20y_fit%2C%20color%3D%22crimson%22%2C%20lw%3D2.2%2C%20label%3Df%22Degree-%7Bd%7D%20fit%22)%0A%20%20%20%20ax_all.set_xlim(-2.3%2C%202.3)%0A%20%20%20%20ax_all.set_ylim(-2%2C%2016)%0A%20%20%20%20ax_all.set_xlabel(%22x%22)%0A%20%20%20%20ax_all.set_ylabel(%22y%22)%0A%20%20%20%20ax_all.set_title(f%22All%2030%20observations%20with%20degree-%7Bd%7D%20polynomial%20fitted%20on%20training%20data%20only%22)%0A%20%20%20%20ax_all.legend(fontsize%3D9)%0A%20%20%20%20plt.tight_layout()%0A%20%20%20%20fig_all%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(%0A%20%20%20%20d%2C%0A%20%20%20%20plt%2C%0A%20%20%20%20test_mse%2C%0A%20%20%20%20train_mse%2C%0A%20%20%20%20x_curve%2C%0A%20%20%20%20x_test%2C%0A%20%20%20%20x_train%2C%0A%20%20%20%20y_fit%2C%0A%20%20%20%20y_test%2C%0A%20%20%20%20y_train%2C%0A)%3A%0A%20%20%20%20fig_tt%2C%20(ax_tr%2C%20ax_te)%20%3D%20plt.subplots(1%2C%202%2C%20figsize%3D(12%2C%204.5)%2C%20sharey%3DTrue)%0A%0A%20%20%20%20ax_tr.scatter(x_train%2C%20y_train%2C%20color%3D%22steelblue%22%2C%20s%3D60%2C%20alpha%3D0.85)%0A%20%20%20%20ax_tr.plot(x_curve%2C%20y_fit%2C%20color%3D%22crimson%22%2C%20lw%3D2.2)%0A%20%20%20%20ax_tr.set_xlim(-2.3%2C%202.3)%0A%20%20%20%20ax_tr.set_ylim(-2%2C%2016)%0A%20%20%20%20ax_tr.set_xlabel(%22x%22)%0A%20%20%20%20ax_tr.set_ylabel(%22y%22)%0A%20%20%20%20ax_tr.set_title(f%22Train%20set%20%E2%80%94%20MSE%20%3D%20%7Btrain_mse%3A.2f%7D%22)%0A%0A%20%20%20%20ax_te.scatter(x_test%2C%20y_test%2C%20color%3D%22darkorange%22%2C%20s%3D60%2C%20alpha%3D0.85)%0A%20%20%20%20ax_te.plot(x_curve%2C%20y_fit%2C%20color%3D%22crimson%22%2C%20lw%3D2.2)%0A%20%20%20%20ax_te.set_xlim(-2.3%2C%202.3)%0A%20%20%20%20ax_te.set_ylim(-2%2C%2016)%0A%20%20%20%20ax_te.set_xlabel(%22x%22)%0A%20%20%20%20ax_te.set_title(f%22Test%20set%20%E2%80%94%20MSE%20%3D%20%7Btest_mse%3A.2f%7D%22)%0A%0A%20%20%20%20plt.suptitle(%0A%20%20%20%20%20%20%20%20f%22Degree%20%7Bd%7D%3A%20as%20degree%20increases%2C%20train%20MSE%20%E2%86%93%20%20but%20%20test%20MSE%20%E2%86%91%22%2C%0A%20%20%20%20%20%20%20%20fontsize%3D11%2C%20fontweight%3D%22bold%22%2C%20y%3D1.01%2C%0A%20%20%20%20)%0A%20%20%20%20plt.tight_layout()%0A%20%20%20%20fig_tt%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(d%2C%20mo%2C%20test_mse%2C%20train_mse)%3A%0A%20%20%20%20if%20d%20%3C%3D%201%3A%0A%20%20%20%20%20%20%20%20kind%20%3D%20%22info%22%0A%20%20%20%20%20%20%20%20body%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Underfitting**%20(degree%20%7Bd%7D)%20%E2%80%94%20Train%20MSE%20%3D%20%7Btrain_mse%3A.2f%7D%2C%20%20Test%20MSE%20%3D%20%7Btest_mse%3A.2f%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20A%20degree-1%20line%20cannot%20capture%20the%20true%20quadratic%20signal.%20%20Both%20errors%20are%20high.%0A%20%20%20%20%20%20%20%20%20%20%20%20Increase%20the%20degree%20toward%202%20to%20see%20both%20errors%20fall.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20elif%20test_mse%20%3E%206.0%3A%0A%20%20%20%20%20%20%20%20kind%20%3D%20%22warn%22%0A%20%20%20%20%20%20%20%20body%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Overfitting**%20(degree%20%7Bd%7D)%20%E2%80%94%20Train%20MSE%20%3D%20%7Btrain_mse%3A.2f%7D%2C%20%20Test%20MSE%20%3D%20%7Btest_mse%3A.2f%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20The%20polynomial%20fits%20the%20training%20noise%20closely%20but%20predicts%20the%20test%20set%20poorly.%0A%20%20%20%20%20%20%20%20%20%20%20%20The%20model%20has%20memorised%20the%2020%20training%20points%20rather%20than%20the%20underlying%20%24y%20%3D%201%20%2B%202x%5E2%24%20pattern.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20kind%20%3D%20%22success%22%0A%20%20%20%20%20%20%20%20body%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Reasonable%20fit**%20(degree%20%7Bd%7D)%20%E2%80%94%20Train%20MSE%20%3D%20%7Btrain_mse%3A.2f%7D%2C%20%20Test%20MSE%20%3D%20%7Btest_mse%3A.2f%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20The%20polynomial%20captures%20the%20true%20quadratic%20shape%20without%20chasing%20too%20much%20noise.%0A%20%20%20%20%20%20%20%20%20%20%20%20The%20irreducible%20noise%20variance%20is%20%24%5C%5Csigma%5E2%20%3D%202.25%24%2C%20so%20the%20best%20achievable%20test%20MSE%0A%20%20%20%20%20%20%20%20%20%20%20%20is%20around%202.25.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20mo.callout(mo.md(body)%2C%20kind%3Dkind)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.25.1",
+            "serverToken": "unused",
+            "config": {"ai": {"allow_provider_config": true, "custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "code_lens": true, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "layout": null,
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>
