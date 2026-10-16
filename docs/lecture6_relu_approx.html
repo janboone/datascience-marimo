@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/apple-touch-icon.png" />
+    <link rel="manifest" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>lecture6 relu approx</title>
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/index-DafnX1Xx.js"></script>
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/rolldown-runtime-B0Z9INg1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/react-CUdNIagt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/compiler-runtime-BQ9S8nyo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useEvent-Dc9HkKI2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/react-dom-CKsE8sC1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/schemas-BL-NsLlF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/isObject-BCaOs5rp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/isSymbol-oX0TOjjx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/now-Cmx0b_zA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/debounce-aFmHgJZY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/isArrayLikeObject-DnwgSs_Z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/_baseMerge-CQpUq7ep.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/objects-snlMn4yk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/jsx-runtime-B74pBk57.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useEventListener-BdZUApHd.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/invariant-Ci2dTZ72.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/config-BxZgoFvi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/utils-B4K466FK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/session-DXKMv4Bs.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/Deferred-CrTnjj37.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/config-DpGPGznL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/clsx-DB0hHKMi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cn-ldLVeaqm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/fullscreen-BmzAqMKq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-CyYN7zJg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/menu-items-BBdeXCvU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/use-restore-focus-B98SEiGc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/button-BoklZTGL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/createLucideIcon-rHn2EdoM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/check-Wea4hZ6R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/context-BFOBKCJB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useNumberFormatter-C4-_TnkF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/select-BplWpfFo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/circle-CeQt3rdW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/toast-KNfsFUiB.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/tooltip-DR2Z2N4w.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/paths-CzfpItSz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useLifecycle-DKSBdWUf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/toDate-BbJ1_N2T.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/database-zap-CrkOvbyN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/alert-dialog-CeE3i3Qa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/arrays-BqUx5USx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/once-Haz_uxEL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/numbers-DsgsDslU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useDebounce-DMbg9X18.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/input-BDakodZ2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/use-toast-CC89xOwH.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/requests-yTHMxhVa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/uuid-k9DpjH68.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/write-secret-modal-BiG2tahJ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/plus-gbN72xHe.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/trash-2-BJG-7Qob.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/preload-helper-HclGiUj8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-BczecT6V.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-BTskHGpb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/capabilities-Bj3s1hGN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cjs-C49f7GXV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/createReducer-BPvK7C_R.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-Ccyblc8N.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/marked.esm-B_3iMIUq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/strings-BHZPE0Mc.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-BN-7G8qZ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/badge-DFf033uX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-CiUBikfn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-MRn68vX1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-Bviq_Dee.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-DBqBVprh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dist-DueXZKz9.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/stex-CJTNBbet.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useTheme-DcnXlv0_.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/useAsyncData-DucTwMkf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/purify.es-CYRiAeUx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cells-CzugpTQu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/get-DjNf4SIX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/copy-RyCOE8jo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/copy-BhJktFeI.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/copy-icon-DFhUGBjO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/ErrorBoundary-BeE1cdgM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/config-B4VJJibu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/chevron-right-DOPs2jx8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/dropdown-menu-VuyoeQOD.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/LazyAnyLanguageCodeMirror-B_IYTCX5.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/hat-glasses-DVgK5i5l.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/package-BeYhVWvM.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/errors-D9vyuMar.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/defaultLocale-CNPGWpMu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/precisionRound-Bq_nmf5u.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/defaultLocale-D5bOh7g6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/vega-loader.browser-CLRkNgm7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/tooltip-PLkI_UfK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/filename-fxG7K_MU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/micromark-factory-space-D9Dr-k4J.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/chunk-YOKDWASO-CaoEAGJk.js">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/cells-0PFKL3SH.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.1/dist/assets/index--sT8xf-8.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "# /// script\n# requires-python = \"\u003E=3.12\"\n# dependencies = [\n#     \"marimo\",\n#     \"numpy\",\n#     \"matplotlib\",\n# ]\n# ///\n\nimport marimo\n\n__generated_with = \"0.25.1\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell\ndef _():\n    import marimo as mo\n    import numpy as np\n    import matplotlib.pyplot as plt\n\n    return mo, np, plt\n\n\n@app.cell\ndef _(mo):\n    mo.md(r\"\"\"\n    # Approximating Functions with ReLU\n\n    The **ReLU** (Rectified Linear Unit) activation function is:\n\n    $$\\text{relu}(z) = \\max(0,\\, z)$$\n\n    It is zero for $z \\le 0$ and grows linearly for $z \u003E 0$ and therefore has a \"kink\" at the origin.\n    Simple as it looks, ReLU is the most widely used activation in modern deep learning.\n\n    ## Why ReLU is so useful for function approximation\n\n    A single *shifted* ReLU,\n\n    $$\\phi_j(x) = \\text{relu}(x - t_j) = \\max(0,\\, x - t_j),$$\n\n    contributes nothing to the left of knot $t_j$ and adds a slope of 1 to the right.\n    A *scaled* and shifted ReLU $\\beta_j \\phi_j(x)$ can also decrease (if $\\beta_j \u003C 0$).\n\n    By stacking $k$ such terms with different knot positions $t_j$ and learned amplitudes $\\beta_j$,\n\n    $$\\hat{f}(x) = \\beta_0 + \\sum_{j=1}^{k} \\beta_j\\,\\text{relu}(x - t_j),$$\n\n    we can change the slope at each knot and approximate any continuous function to arbitrary\n    precision \u2014 this is a consequence of the [universal approximation theorem](https://en.wikipedia.org/wiki/Universal_approximation_theorem).\n\n    In a trained neural network the knot positions are also learned from data. Here we fix them evenly and learn only the amplitudes $\\beta_j$ which is enough to demonstrate the core idea.\n\n    We approximate the target $f(x) = x^3 + x^2 - x - 1$ on $[-2,\\; 1.5]$.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(mo):\n    k_slider = mo.ui.slider(1, 20, value=3, step=1,\n                             label=\"Number of ReLU basis functions (k)\")\n    k_slider\n    return (k_slider,)\n\n\n@app.cell\ndef _(k_slider, np):\n    _x_min, _x_max = -2.0, 1.5\n    x_plot = np.linspace(_x_min, _x_max, 500)\n    y_true = x_plot**3 + x_plot**2 - x_plot - 1\n\n    k = k_slider.value\n    # k interior knots, evenly spaced (excluding endpoints)\n    knots = np.linspace(_x_min, _x_max, k + 2)[1:-1]\n\n    # Design matrix: [1, relu(x-t_1), ..., relu(x-t_k)]\n    Phi = np.column_stack(\n        [np.ones(len(x_plot))] + [np.maximum(0.0, x_plot - t) for t in knots]\n    )\n\n    # Ordinary least squares: fit amplitudes beta\n    beta_ols, _, _, _ = np.linalg.lstsq(Phi, y_true, rcond=None)\n    y_hat    = Phi @ beta_ols\n    approx_mse = float(np.mean((y_true - y_hat) ** 2))\n\n    # Individual scaled contributions: beta_j * relu(x - t_j)\n    contributions = [beta_ols[0] * np.ones(len(x_plot))]\n    for _j, _t in enumerate(knots):\n        contributions.append(beta_ols[_j + 1] * np.maximum(0.0, x_plot - _t))\n    return approx_mse, contributions, k, knots, x_plot, y_hat, y_true\n\n\n@app.cell\ndef _(approx_mse, contributions, k, knots, np, plt, x_plot, y_hat, y_true):\n    _colors = plt.cm.tab10(np.linspace(0, 0.9, k + 1))\n\n    _fig, (_ax1, _ax2) = plt.subplots(\n        2, 1, figsize=(10, 10),\n        gridspec_kw={\"height_ratios\": [2.5, 2.3]}\n    )\n\n    # \u2500\u2500 Top: target + approximation \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    _ax1.plot(x_plot, y_true, color=\"black\", lw=2.5,\n              label=r\"Target: $f(x) = x^3 + x^2 - x - 1$\")\n    _ax1.plot(x_plot, y_hat, color=\"steelblue\", lw=2.2, ls=\"--\",\n              label=f\"ReLU approximation  (k = {k},  MSE = {approx_mse:.4f})\")\n    for _t in knots:\n        _ax1.axvline(_t, color=\"grey\", lw=0.8, ls=\":\", alpha=0.55)\n    _ax1.axhline(0, color=\"grey\", lw=0.4)\n    _ax1.set_xlim(-2.0, 1.5)\n    _ax1.set_ylabel(\"$f(x)$\")\n    _ax1.legend(fontsize=9)\n    _ax1.set_title(\n        f\"Approximating $f(x)$ with {k} ReLU basis function{'s' if k \u003E 1 else ''}  \"\n        f\"(knot positions shown as dotted verticals)\"\n    )\n\n    # \u2500\u2500 Bottom: individual scaled contributions \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    for _j, _c in enumerate(contributions):\n        #if _j == 0:\n        #    _lbl = f\"Intercept  $\\\\beta_0 = {beta_ols[0]:.2f}$\"\n        #else:\n        #    _lbl = (f\"$\\\\beta_{{{_j}}}\\\\,\\\\mathrm{{relu}}(x - {knots[_j-1]:.2f})$\"\n        #            f\",  $\\\\beta_{{{_j}}} = {beta_ols[_j]:.2f}$\")\n        _ax2.plot(x_plot, _c, color=_colors[_j], lw=1.6, alpha=0.85)#, label=_lbl)\n    _ax2.axhline(0, color=\"grey\", lw=0.4)\n    _ax2.set_xlim(-2.0, 1.5)\n    _ax2.set_xlabel(\"$x$\")\n    _ax2.set_ylabel(\"Component\")\n    _ax2.set_title(\"Individual scaled ReLU contributions  (sum of all gives the approximation above)\")\n    #_ax2.legend(fontsize=7, ncol=min(k + 1, 5), loc=\"upper left\")\n\n    plt.tight_layout()\n    _fig\n    return\n\n\n@app.cell\ndef _(approx_mse, k, mo):\n    if approx_mse \u003E 0.5:\n        _kind = \"info\"\n        _msg = f\"\"\"\n            **Coarse approximation** \u2014 {k} ReLU function{'s' if k \u003E 1 else ''},  MSE = {approx_mse:.4f}\n\n            With only {k} basis function{'s' if k \u003E 1 else ''} the piecewise-linear model can\n            capture only the broadest shape of $f$.  Increase $k$ to add more kinks and reduce\n            the approximation error.\n            \"\"\"\n    elif approx_mse \u003C 0.02:\n        _kind = \"success\"\n        _msg = f\"\"\"\n            **Excellent approximation** \u2014 {k} ReLU functions,  MSE = {approx_mse:.4f}\n\n            The piecewise-linear model with {k} basis functions tracks the cubic target closely.\n            In a trained neural network the knot positions are also learned from data \u2014 making\n            the same number of ReLUs even more powerful.\n            \"\"\"\n    else:\n        _kind = \"neutral\"\n        _msg = f\"\"\"\n            **Moderate approximation** \u2014 {k} ReLU functions,  MSE = {approx_mse:.4f}\n\n            The model captures the main shape of $f$ but smooths over some local curvature.\n            Add more ReLU units to reduce the MSE further.  The bottom panel shows how the\n            individual contributions combine to produce the blue curve above.\n            \"\"\"\n    mo.callout(mo.md(_msg), kind=_kind)\n    return\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%0A%23%20%20%20%20%20%22marimo%22%2C%0A%23%20%20%20%20%20%22numpy%22%2C%0A%23%20%20%20%20%20%22matplotlib%22%2C%0A%23%20%5D%0A%23%20%2F%2F%2F%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.25.1%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%0A%20%20%20%20return%20mo%2C%20np%2C%20plt%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Approximating%20Functions%20with%20ReLU%0A%0A%20%20%20%20The%20**ReLU**%20(Rectified%20Linear%20Unit)%20activation%20function%20is%3A%0A%0A%20%20%20%20%24%24%5Ctext%7Brelu%7D(z)%20%3D%20%5Cmax(0%2C%5C%2C%20z)%24%24%0A%0A%20%20%20%20It%20is%20zero%20for%20%24z%20%5Cle%200%24%20and%20grows%20linearly%20for%20%24z%20%3E%200%24%20and%20therefore%20has%20a%20%22kink%22%20at%20the%20origin.%0A%20%20%20%20Simple%20as%20it%20looks%2C%20ReLU%20is%20the%20most%20widely%20used%20activation%20in%20modern%20deep%20learning.%0A%0A%20%20%20%20%23%23%20Why%20ReLU%20is%20so%20useful%20for%20function%20approximation%0A%0A%20%20%20%20A%20single%20*shifted*%20ReLU%2C%0A%0A%20%20%20%20%24%24%5Cphi_j(x)%20%3D%20%5Ctext%7Brelu%7D(x%20-%20t_j)%20%3D%20%5Cmax(0%2C%5C%2C%20x%20-%20t_j)%2C%24%24%0A%0A%20%20%20%20contributes%20nothing%20to%20the%20left%20of%20knot%20%24t_j%24%20and%20adds%20a%20slope%20of%201%20to%20the%20right.%0A%20%20%20%20A%20*scaled*%20and%20shifted%20ReLU%20%24%5Cbeta_j%20%5Cphi_j(x)%24%20can%20also%20decrease%20(if%20%24%5Cbeta_j%20%3C%200%24).%0A%0A%20%20%20%20By%20stacking%20%24k%24%20such%20terms%20with%20different%20knot%20positions%20%24t_j%24%20and%20learned%20amplitudes%20%24%5Cbeta_j%24%2C%0A%0A%20%20%20%20%24%24%5Chat%7Bf%7D(x)%20%3D%20%5Cbeta_0%20%2B%20%5Csum_%7Bj%3D1%7D%5E%7Bk%7D%20%5Cbeta_j%5C%2C%5Ctext%7Brelu%7D(x%20-%20t_j)%2C%24%24%0A%0A%20%20%20%20we%20can%20change%20the%20slope%20at%20each%20knot%20and%20approximate%20any%20continuous%20function%20to%20arbitrary%0A%20%20%20%20precision%20%E2%80%94%20this%20is%20a%20consequence%20of%20the%20%5Buniversal%20approximation%20theorem%5D(https%3A%2F%2Fen.wikipedia.org%2Fwiki%2FUniversal_approximation_theorem).%0A%0A%20%20%20%20In%20a%20trained%20neural%20network%20the%20knot%20positions%20are%20also%20learned%20from%20data.%20Here%20we%20fix%20them%20evenly%20and%20learn%20only%20the%20amplitudes%20%24%5Cbeta_j%24%20which%20is%20enough%20to%20demonstrate%20the%20core%20idea.%0A%0A%20%20%20%20We%20approximate%20the%20target%20%24f(x)%20%3D%20x%5E3%20%2B%20x%5E2%20-%20x%20-%201%24%20on%20%24%5B-2%2C%5C%3B%201.5%5D%24.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20k_slider%20%3D%20mo.ui.slider(1%2C%2020%2C%20value%3D3%2C%20step%3D1%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22Number%20of%20ReLU%20basis%20functions%20(k)%22)%0A%20%20%20%20k_slider%0A%20%20%20%20return%20(k_slider%2C)%0A%0A%0A%40app.cell%0Adef%20_(k_slider%2C%20np)%3A%0A%20%20%20%20_x_min%2C%20_x_max%20%3D%20-2.0%2C%201.5%0A%20%20%20%20x_plot%20%3D%20np.linspace(_x_min%2C%20_x_max%2C%20500)%0A%20%20%20%20y_true%20%3D%20x_plot**3%20%2B%20x_plot**2%20-%20x_plot%20-%201%0A%0A%20%20%20%20k%20%3D%20k_slider.value%0A%20%20%20%20%23%20k%20interior%20knots%2C%20evenly%20spaced%20(excluding%20endpoints)%0A%20%20%20%20knots%20%3D%20np.linspace(_x_min%2C%20_x_max%2C%20k%20%2B%202)%5B1%3A-1%5D%0A%0A%20%20%20%20%23%20Design%20matrix%3A%20%5B1%2C%20relu(x-t_1)%2C%20...%2C%20relu(x-t_k)%5D%0A%20%20%20%20Phi%20%3D%20np.column_stack(%0A%20%20%20%20%20%20%20%20%5Bnp.ones(len(x_plot))%5D%20%2B%20%5Bnp.maximum(0.0%2C%20x_plot%20-%20t)%20for%20t%20in%20knots%5D%0A%20%20%20%20)%0A%0A%20%20%20%20%23%20Ordinary%20least%20squares%3A%20fit%20amplitudes%20beta%0A%20%20%20%20beta_ols%2C%20_%2C%20_%2C%20_%20%3D%20np.linalg.lstsq(Phi%2C%20y_true%2C%20rcond%3DNone)%0A%20%20%20%20y_hat%20%20%20%20%3D%20Phi%20%40%20beta_ols%0A%20%20%20%20approx_mse%20%3D%20float(np.mean((y_true%20-%20y_hat)%20**%202))%0A%0A%20%20%20%20%23%20Individual%20scaled%20contributions%3A%20beta_j%20*%20relu(x%20-%20t_j)%0A%20%20%20%20contributions%20%3D%20%5Bbeta_ols%5B0%5D%20*%20np.ones(len(x_plot))%5D%0A%20%20%20%20for%20_j%2C%20_t%20in%20enumerate(knots)%3A%0A%20%20%20%20%20%20%20%20contributions.append(beta_ols%5B_j%20%2B%201%5D%20*%20np.maximum(0.0%2C%20x_plot%20-%20_t))%0A%20%20%20%20return%20approx_mse%2C%20contributions%2C%20k%2C%20knots%2C%20x_plot%2C%20y_hat%2C%20y_true%0A%0A%0A%40app.cell%0Adef%20_(approx_mse%2C%20contributions%2C%20k%2C%20knots%2C%20np%2C%20plt%2C%20x_plot%2C%20y_hat%2C%20y_true)%3A%0A%20%20%20%20_colors%20%3D%20plt.cm.tab10(np.linspace(0%2C%200.9%2C%20k%20%2B%201))%0A%0A%20%20%20%20_fig%2C%20(_ax1%2C%20_ax2)%20%3D%20plt.subplots(%0A%20%20%20%20%20%20%20%202%2C%201%2C%20figsize%3D(10%2C%2010)%2C%0A%20%20%20%20%20%20%20%20gridspec_kw%3D%7B%22height_ratios%22%3A%20%5B2.5%2C%202.3%5D%7D%0A%20%20%20%20)%0A%0A%20%20%20%20%23%20%E2%94%80%E2%94%80%20Top%3A%20target%20%2B%20approximation%20%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%0A%20%20%20%20_ax1.plot(x_plot%2C%20y_true%2C%20color%3D%22black%22%2C%20lw%3D2.5%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Dr%22Target%3A%20%24f(x)%20%3D%20x%5E3%20%2B%20x%5E2%20-%20x%20-%201%24%22)%0A%20%20%20%20_ax1.plot(x_plot%2C%20y_hat%2C%20color%3D%22steelblue%22%2C%20lw%3D2.2%2C%20ls%3D%22--%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20label%3Df%22ReLU%20approximation%20%20(k%20%3D%20%7Bk%7D%2C%20%20MSE%20%3D%20%7Bapprox_mse%3A.4f%7D)%22)%0A%20%20%20%20for%20_t%20in%20knots%3A%0A%20%20%20%20%20%20%20%20_ax1.axvline(_t%2C%20color%3D%22grey%22%2C%20lw%3D0.8%2C%20ls%3D%22%3A%22%2C%20alpha%3D0.55)%0A%20%20%20%20_ax1.axhline(0%2C%20color%3D%22grey%22%2C%20lw%3D0.4)%0A%20%20%20%20_ax1.set_xlim(-2.0%2C%201.5)%0A%20%20%20%20_ax1.set_ylabel(%22%24f(x)%24%22)%0A%20%20%20%20_ax1.legend(fontsize%3D9)%0A%20%20%20%20_ax1.set_title(%0A%20%20%20%20%20%20%20%20f%22Approximating%20%24f(x)%24%20with%20%7Bk%7D%20ReLU%20basis%20function%7B's'%20if%20k%20%3E%201%20else%20''%7D%20%20%22%0A%20%20%20%20%20%20%20%20f%22(knot%20positions%20shown%20as%20dotted%20verticals)%22%0A%20%20%20%20)%0A%0A%20%20%20%20%23%20%E2%94%80%E2%94%80%20Bottom%3A%20individual%20scaled%20contributions%20%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%E2%94%80%0A%20%20%20%20for%20_j%2C%20_c%20in%20enumerate(contributions)%3A%0A%20%20%20%20%20%20%20%20%23if%20_j%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20%23%20%20%20%20_lbl%20%3D%20f%22Intercept%20%20%24%5C%5Cbeta_0%20%3D%20%7Bbeta_ols%5B0%5D%3A.2f%7D%24%22%0A%20%20%20%20%20%20%20%20%23else%3A%0A%20%20%20%20%20%20%20%20%23%20%20%20%20_lbl%20%3D%20(f%22%24%5C%5Cbeta_%7B%7B%7B_j%7D%7D%7D%5C%5C%2C%5C%5Cmathrm%7B%7Brelu%7D%7D(x%20-%20%7Bknots%5B_j-1%5D%3A.2f%7D)%24%22%0A%20%20%20%20%20%20%20%20%23%20%20%20%20%20%20%20%20%20%20%20%20f%22%2C%20%20%24%5C%5Cbeta_%7B%7B%7B_j%7D%7D%7D%20%3D%20%7Bbeta_ols%5B_j%5D%3A.2f%7D%24%22)%0A%20%20%20%20%20%20%20%20_ax2.plot(x_plot%2C%20_c%2C%20color%3D_colors%5B_j%5D%2C%20lw%3D1.6%2C%20alpha%3D0.85)%23%2C%20label%3D_lbl)%0A%20%20%20%20_ax2.axhline(0%2C%20color%3D%22grey%22%2C%20lw%3D0.4)%0A%20%20%20%20_ax2.set_xlim(-2.0%2C%201.5)%0A%20%20%20%20_ax2.set_xlabel(%22%24x%24%22)%0A%20%20%20%20_ax2.set_ylabel(%22Component%22)%0A%20%20%20%20_ax2.set_title(%22Individual%20scaled%20ReLU%20contributions%20%20(sum%20of%20all%20gives%20the%20approximation%20above)%22)%0A%20%20%20%20%23_ax2.legend(fontsize%3D7%2C%20ncol%3Dmin(k%20%2B%201%2C%205)%2C%20loc%3D%22upper%20left%22)%0A%0A%20%20%20%20plt.tight_layout()%0A%20%20%20%20_fig%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(approx_mse%2C%20k%2C%20mo)%3A%0A%20%20%20%20if%20approx_mse%20%3E%200.5%3A%0A%20%20%20%20%20%20%20%20_kind%20%3D%20%22info%22%0A%20%20%20%20%20%20%20%20_msg%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Coarse%20approximation**%20%E2%80%94%20%7Bk%7D%20ReLU%20function%7B's'%20if%20k%20%3E%201%20else%20''%7D%2C%20%20MSE%20%3D%20%7Bapprox_mse%3A.4f%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20With%20only%20%7Bk%7D%20basis%20function%7B's'%20if%20k%20%3E%201%20else%20''%7D%20the%20piecewise-linear%20model%20can%0A%20%20%20%20%20%20%20%20%20%20%20%20capture%20only%20the%20broadest%20shape%20of%20%24f%24.%20%20Increase%20%24k%24%20to%20add%20more%20kinks%20and%20reduce%0A%20%20%20%20%20%20%20%20%20%20%20%20the%20approximation%20error.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20elif%20approx_mse%20%3C%200.02%3A%0A%20%20%20%20%20%20%20%20_kind%20%3D%20%22success%22%0A%20%20%20%20%20%20%20%20_msg%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Excellent%20approximation**%20%E2%80%94%20%7Bk%7D%20ReLU%20functions%2C%20%20MSE%20%3D%20%7Bapprox_mse%3A.4f%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20The%20piecewise-linear%20model%20with%20%7Bk%7D%20basis%20functions%20tracks%20the%20cubic%20target%20closely.%0A%20%20%20%20%20%20%20%20%20%20%20%20In%20a%20trained%20neural%20network%20the%20knot%20positions%20are%20also%20learned%20from%20data%20%E2%80%94%20making%0A%20%20%20%20%20%20%20%20%20%20%20%20the%20same%20number%20of%20ReLUs%20even%20more%20powerful.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20_kind%20%3D%20%22neutral%22%0A%20%20%20%20%20%20%20%20_msg%20%3D%20f%22%22%22%0A%20%20%20%20%20%20%20%20%20%20%20%20**Moderate%20approximation**%20%E2%80%94%20%7Bk%7D%20ReLU%20functions%2C%20%20MSE%20%3D%20%7Bapprox_mse%3A.4f%7D%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20The%20model%20captures%20the%20main%20shape%20of%20%24f%24%20but%20smooths%20over%20some%20local%20curvature.%0A%20%20%20%20%20%20%20%20%20%20%20%20Add%20more%20ReLU%20units%20to%20reduce%20the%20MSE%20further.%20%20The%20bottom%20panel%20shows%20how%20the%0A%20%20%20%20%20%20%20%20%20%20%20%20individual%20contributions%20combine%20to%20produce%20the%20blue%20curve%20above.%0A%20%20%20%20%20%20%20%20%20%20%20%20%22%22%22%0A%20%20%20%20mo.callout(mo.md(_msg)%2C%20kind%3D_kind)%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.25.1",
+            "serverToken": "unused",
+            "config": {"ai": {"allow_provider_config": true, "custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "code_lens": true, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "layout": null,
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>
