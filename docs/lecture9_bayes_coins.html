@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/favicon.ico" />
+    <!-- Preload is necessary because we show these images when we disconnect from the server,
+    but at that point we cannot load these images from the server -->
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/gradient-yHQUC_QB.png" as="image" />
+    <link rel="preload" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/noise-60BoTA8O.png" as="image" />
+    <!-- Preload the fonts -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/Lora-VariableFont_wght-CZceb_kH.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/PTSans-Regular-Bam3NpBI.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/PTSans-Bold-C_DwAp7Z.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/FiraMono-Regular-CEsLFVD9.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/FiraMono-Medium-D5MAsWEG.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/FiraMono-Bold-C6PDArdf.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="a marimo app" />
+    <link rel="apple-touch-icon" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/apple-touch-icon.png" />
+    <link rel="manifest" crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/manifest.json" />
+
+    <script data-marimo="true">
+      function __resizeIframe(obj) {
+        const scrollbarHeight = 20; // Max between windows, mac, and linux
+
+        function setHeight() {
+          // Guard against race condition where iframe isn't ready
+          if (!obj.contentWindow?.document?.documentElement) {
+            return;
+          }
+          const element = obj.contentWindow.document.documentElement;
+          // If there is no vertical scrollbar, we don't need to resize the iframe
+          if (element.scrollHeight === element.clientHeight) {
+            return;
+          }
+
+          // Create a new height that includes the scrollbar height if it's visible
+          const hasHorizontalScrollbar = element.scrollWidth > element.clientWidth;
+          const newHeight = element.scrollHeight + (hasHorizontalScrollbar ? scrollbarHeight : 0);
+
+          // Only update the height if it's different from the current height
+          if (obj.style.height !== `${newHeight}px`) {
+            obj.style.height = `${newHeight}px`;
+          }
+        }
+
+        // Resize the iframe to the height of the content and bottom scrollbar height
+        setHeight();
+
+        // Resize the iframe when the content changes
+        const resizeObserver = new ResizeObserver((_entries) => {
+          setHeight();
+        });
+        // Only observe if iframe content is ready
+        if (obj.contentWindow?.document?.body) {
+          resizeObserver.observe(obj.contentWindow.document.body);
+        }
+      }
+    </script>
+    <marimo-filename hidden>notebook.py</marimo-filename>
+    <!-- TODO(Trevor): Legacy, required by VS Code plugin. Remove when plugin is updated (see marimo/server/_templates/template.py) -->
+    <marimo-version data-version="{{ version }}" hidden></marimo-version>
+    <marimo-user-config data-config="{{ user_config }}" hidden></marimo-user-config>
+    <marimo-server-token data-token="{{ server_token }}" hidden></marimo-server-token>
+    <!-- /TODO -->
+    <title>lecture9 bayes coins</title>
+    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/index-s-M1OXjs.js"></script>
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/rolldown-runtime-B0Z9INg1.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-DVplv7_D.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/compiler-runtime-BrajqUja.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useEvent-Dfcbgjhg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-dom-_LrxgvjW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/schemas-Dv42wLFq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isObject-BCaOs5rp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isSymbol-oX0TOjjx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/now-Cmx0b_zA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/debounce-aFmHgJZY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isArrayLikeObject-DnwgSs_Z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/_baseMerge-CQpUq7ep.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/objects-snlMn4yk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useEventListener-D9cftcHj.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/invariant-Ci2dTZ72.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/config-VPSq73n8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/utils-B4K466FK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/session-DqoWmb7X.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/Deferred-CrTnjj37.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/config-DX8Y2WbJ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/clsx-DB0hHKMi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cn-ldLVeaqm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/jsx-runtime-B74pBk57.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/fullscreen-B9tHcfpV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-iaThVDkA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/menu-items-BrwnTgyK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/use-restore-focus-BxEGwIbk.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/createLucideIcon-DfJ2oMlA.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/circle-DXf-VWZG.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/button-COI-NGrx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/check-BQNapYaf.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/I18nProvider-Cg2I_s1_.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useNumberFormatter-D7O_26UI.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/select-DTBn5eTb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/toast-BGzLGnvw.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tooltip-C9TuY18o.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/paths-bkIFVj8h.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useLifecycle-Mq4gc5kS.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/toDate-DOj9Q6uC.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/database-zap-B_PMVg8T.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/alert-dialog-BaPGzeOK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/arrays-BqUx5USx.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/once-Haz_uxEL.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/numbers-Mk3-CcoU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useDebounce-B_ccBZTp.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/input-BoBxR50a.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/use-toast-Wu434mLr.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/requests-lt0JK8Jt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/uuid-k9DpjH68.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/write-secret-modal-DzKAInL2.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/plus-C5silF6g.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/trash-2-DcgaW8fn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/preload-helper-uBIymjUX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-Cny7_yZb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-DBMV4gqt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/capabilities-BJvf-MD4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cjs-C49f7GXV.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/createReducer-DgRODTW6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-qhAY4L2r.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/marked.esm-B_3iMIUq.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/strings-B2vv-ENv.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-BOfh4hMd.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/badge-crT3E0Rm.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-DtH-7lot.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-BmExfiwX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-1tmpVXyz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-LSsCJjA3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dist-DusFODSa.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/stex-Dc5bKD4z.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useTheme-COhSHkCj.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useAsyncData-C7aJJz0Y.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/purify.es--06brOip.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cells-BRkCaSsh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/coerce-CpE6kUdX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/get-DjNf4SIX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/_hasPath-BmRQipI0.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/hasIn-yw4sIeJR.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/_baseSet-Bpdo9AvU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/pick-DKIID_Mo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-BAJYRhmO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-C3oDoyFe.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/LazyAnyLanguageCodeMirror-CKcCbG2G.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/copy-D8O_CYCG.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/micromark-factory-space-D9Dr-k4J.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/chunk-YOKDWASO-BIpRENEC.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/markdown-renderer-BG3sp2rs.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/copy-Djr5m5ac.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/copy-icon-BIiRXh_3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useRunCells-B2vUhREg.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/RenderHTML-BbOqmHy3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/blob-D5nfNHOo.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/kbd-pdKBv96t.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useInstallPackage-iX1eufdl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/errors-DCrsa1nH.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/api-BeC_VSGv.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/share-BZW3tzEX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/events-CbeVJ6OD.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-_Qai_QyX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/pair-CaQyK6En.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/ErrorBoundary-Gl5nCA8C.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/config-BOKzA3tF.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/chevron-right-eAtVhbNZ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dropdown-menu-C1rnl-0o.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/html-to-image-DK9Zl1lU.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/download-DCJXy66H.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/switch-CTaiAjrz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tabs-BuQlZFbt.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/table-DG7Ap4H4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/eye-off-CxVozGAC.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/refresh-cw-Qw1f8Jhy.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tree-actions-GM5E_bUs.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/ellipsis-63DyBLHQ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/external-link-UrX9KO36.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/spinner-DyNE-o8o.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/message-circle-C3rKm8_a.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/hat-glasses-C8RhSVii.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/package-GSoSTiIK.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/datasource-Cq6x_5ML.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/alert-DTaqCu_d.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/state-XsPO8hNi.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cell-link-LSth_8hT.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/MarimoErrorOutput-D60XkCny.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useDateFormatter-DA-62E-Y.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/en-US-Buu61juQ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/isValid-q_Ad80ug.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/dates-BbFQ2oE4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/defaultLocale-CNPGWpMu.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/precisionRound-Bq_nmf5u.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/defaultLocale-D5bOh7g6.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/vega-loader.browser-CLRkNgm7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/tooltip-mT3CGest.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-icons.esm-D6tfmvq8.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/extends-CvVTau-c.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/objectWithoutPropertiesLoose-Do6ywDBO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useIframeCapabilities-CwTkczVN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/error-banner-Cd69vvyX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/utils-CaQYvazl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/formats-yZ06h1Pl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/table-vrvqpuKJ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/react-resizable-panels.browser.esm-Dbe0MrFr.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/JsonOutput-D6HIIsCb.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/chart-no-axes-column-C4_v6fQW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/square-function-_W_Lo0P4.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/spec-BfSBcO5B.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/semaphore-BjoL5P0h.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/fileToBase64-BgBraYAr.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useBoolean-BDD6_xQQ.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/code-xml-SQaZqvcO.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/file-headphone-Dl35U6h3.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/file-BPBVl9pl.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/image-wZvTj8WY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/file-icons-CdJgUy-I.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/globe-UdPdIbF7.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/esm-CI_o7NhW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useAddCell-GR7eEQrT.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/readonly-python-code-DCSMIsTX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/data-grid-types-DgHVN_Zz.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/glide-utils-CIrAxdjv.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/column-preview-Cm2D6vyX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/square-BPmgQFnh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/triangle-alert-DmIqR8sY.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/prop-types-Djf4O40e.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/es-Cqst59WX.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/package-data-dv4FBHxR.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/markdown-export-DzhB1FrN.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/renderShortcut-BkVJQ_Zh.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/bundle.esm-D3tw5rqW.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/icons-CiZ_8zS-.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/useDeepCompareMemoize-DFIVN9dn.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/pathUtils-DPmlLd-r.js">
+    <link rel="modulepreload" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/floating-outline-XD9FAV-f.js">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/cells-0PFKL3SH.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/markdown-renderer-DjIHoF9Z.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/JsonOutput-B0GmlMnR.css">
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/npm/@marimo-team/frontend@0.25.2/dist/assets/index-Bcdzex-3.css">
+  <marimo-wasm hidden=""></marimo-wasm>
+    <style>
+        #save-button {
+            display: none !important;
+        }
+        #filename-input {
+            display: none !important;
+        }
+    </style>
+    
+<script data-marimo="true">
+    Object.defineProperty(window, "__MARIMO_EXPORT_CONTEXT__", {
+        value: Object.freeze({
+            trusted: true,
+            notebookCode: "# /// script\n# requires-python = \"\u003E=3.12\"\n# dependencies = [\"marimo\", \"matplotlib==3.10.8\", \"numpy==2.4.3\", \"scipy==1.17.1\"]\n# \n# [tool.marimo.export]\n# lock_kind = \"observed\"\n# ///\n\nimport marimo\n\n__generated_with = \"0.25.2\"\napp = marimo.App(width=\"medium\")\n\n\n@app.cell\ndef _():\n    import marimo as mo\n    import numpy as np\n    import matplotlib.pyplot as plt\n    from scipy.stats import binom, beta as beta_dist\n\n    return beta_dist, binom, mo, np, plt\n\n\n@app.cell\ndef _(mo):\n    mo.md(r\"\"\"\n    # Bayesian Updating: Coin Flipping\n\n    In Bayesian statistics an estimate of a parameter is not a number; it is actually a distribution. Suppose the parameter of interest is $p$ and we have observed data. Then we want to find the so called posterior distribution:\n\n    $$\n    Prob(p|data) = \\frac{P(p \\text{ and data})}{P(data)}\n    $$\n\n    With this distribution, we can calculate the probability that $p$ exceeds 0.8 given our observed data: $Prob(p \u003E 0.8 | data)$.\n\n    The notation \\(P(p \\text{ and data})\\) is sometimes written as the joint probability \\(P(p, data)\\). Bayes' theorem then rewrites it as \\(P(p, data) =P(data|p)P(p) \\). Hence, we get\n\n    $$\n    Prob(p|data) = \\frac{P(data|p)P(p)}{P(data)}\n    $$\n\n    In words:\n\n    - \\(P(p)\\) is the **prior**: what we believed about \\(p\\) before observing data.\n    - \\(P(data|p)\\) is the **likelihood**: how probable the observed data are for a given value of \\(p\\).\n    - \\(P(data)\\) is the **evidence** or normalising constant.\n    - \\(P(p|data)\\) is the **posterior**: our updated belief about \\(p\\) after seeing the data.\n\n\n    ## Bayes' theorem\n\n    You want to estimate $p$, the probability a coin lands heads.\n    Before seeing any data you hold a **prior** belief $P(p)$.\n    After observing $y$ heads in $n$ throws, Bayes' theorem gives the **posterior**:\n\n    $$\n    P(p \\mid y, n)\n    = \\frac{P(y \\mid p, n)\\; P(p)}{\\int_0^1 P(y \\mid \\pi, n)\\,P(\\pi)\\,d\\pi}\n    \\;\\propto\\;\n    \\underbrace{P(y \\mid p, n)}_{\\text{likelihood}}\\;\n    \\underbrace{P(p)}_{\\text{prior}}.\n    $$\n\n    The **likelihood** $P(y \\mid p, n) = \\binom{n}{y}p^y(1-p)^{n-y}$ is the probability of\n    observing exactly $y$ heads in $n$ independent throws when the true probability is $p$.\n    The denominator is a normalising constant that makes the posterior integrate to 1;\n    it does not depend on $p$ and can be ignored when comparing posteriors.\n\n    If we observe 14 heads in 20 throws, we can write the posterior as follows:\n    $$\n    Prob(p|data) =  \\frac{\\binom{20}{14}p^{14}(1-p)^{20-14}P(p)}{\\int_{0}^1 \\binom{20}{14}\\pi^{14}(1-\\pi)^{20-14}P(\\pi)d\\pi}\n    $$\n\n    ## Grid approximation\n\n    We evaluate the right-hand side on a fine grid of 600 values of $p \\in (0,1)$,\n    multiply prior by likelihood at each grid point, and divide by the sum to normalise.\n    The result is a discrete approximation to the posterior density.\n\n    ## Sequential vs.\\ batch updating\n\n    Suppose you throw the coin $n$ times, recording outcomes $x_1, x_2, \\ldots, x_n \\in \\{heads,tails\\}$.\n\n    **Step by step**: use each flip to update the current posterior, which then becomes the\n    prior for the next flip:\n    $$\n    P(p \\mid x_1) \\propto P(x_1 \\mid p)\\,P(p),\n    \\quad\n    P(p \\mid x_1, x_2) \\propto P(x_2 \\mid p)\\underbrace{P(p \\mid x_1)}_{\\text{new prior}}\n    \\propto P(x_2 \\mid p)\\,P(x_1 \\mid p)\\,P(p).\n    $$\n\n    **All at once**: feed all $n$ flips to the original prior simultaneously:\n    $$\n    P(p \\mid y, n) \\propto P(y \\mid p, n)\\,P(p)\n    = \\prod_{i=1}^n P(x_i \\mid p)\\cdot P(p).\n    $$\n    where $y$ equals the number of heads in $n$ flips.\n\n    The two expressions are identical because the flips are independent.\n    It does not matter whether you update after every throw or after all $n$ throws \u2014\n    the final posterior is the same.\n\n    ---\n\n    Use the controls below to set the true probability and choose a prior.\n    The six panels show how the posterior (solid blue) concentrates around the\n    true value as more data arrive.  The dashed black line is the prior.\n    \"\"\")\n    return\n\n\n@app.cell\ndef _(mo):\n    p_slider = mo.ui.slider(\n        0.1, 0.9, value=0.7, step=0.05,\n        label=r\"True probability of head $p$\",\n    )\n    prior_dd = mo.ui.dropdown(\n        options={\n            \"Uniform  \u2014  Beta(1, 1)\": (1, 1),\n            \"Sceptical  \u2014  Beta(2, 5),  mode = 0.2\": (2, 5),\n            \"Optimistic  \u2014  Beta(5, 2),  mode = 0.8\": (5, 2),\n        },\n        value=\"Uniform  \u2014  Beta(1, 1)\",\n        label=\"Prior for p\",\n    )\n    mo.vstack([p_slider, prior_dd])\n    return p_slider, prior_dd\n\n\n@app.cell\ndef _(beta_dist, binom, np, p_slider, plt, prior_dd):\n    # Fixed seed so the same p always produces the same coin sequence.\n    _rng = np.random.default_rng(42)\n    _flips = _rng.binomial(1, p_slider.value, 20)\n\n    # Grid\n    _p = np.linspace(0.001, 0.999, 600)\n    _dp = _p[1] - _p[0]\n    _a, _b = prior_dd.value\n\n    def _normalize(arr):\n        return arr / (arr.sum() * _dp)\n\n    def _update(current_pdf, y_new, n_new):\n        return _normalize(binom.pmf(y_new, n_new, _p) * current_pdf)\n\n    # Build sequential posteriors.\n    # n=1..5: update one flip at a time.\n    # n=20: update from the n=5 posterior with the 15 new flips at once\n    #       (valid because sequential = batch).\n    _current = _normalize(beta_dist.pdf(_p, _a, _b))\n    _priors_to_plot = []\n    _posteriors = []\n    _y_cumul = []\n\n    for _i in range(5):\n        _priors_to_plot.append(_current)\n        _current = _update(_current, int(_flips[_i]), 1)\n        _posteriors.append(_current)\n        _y_cumul.append(int(_flips[: _i + 1].sum()))\n\n    _priors_to_plot.append(_current)          # n=5 posterior becomes prior for n=20\n    _current = _update(_current, int(_flips[5:].sum()), 15)\n    _posteriors.append(_current)\n    _y_cumul.append(int(_flips.sum()))\n\n    _n_vals = [1, 2, 3, 4, 5, 20]\n    _fig, _axes = plt.subplots(2, 3, figsize=(12, 7))\n\n    for _idx, (_ax, _n, _y, _pri, _post) in enumerate(\n        zip(_axes.flat, _n_vals, _y_cumul, _priors_to_plot, _posteriors)\n    ):\n        _label_prior = \"Prior  Beta({}, {})\".format(_a, _b) if _idx == 0 else \"Previous posterior\"\n        _ax.plot(_p, _pri, color=\"black\", lw=1.5, ls=\"--\", label=_label_prior)\n        _ax.plot(_p, _post, color=\"steelblue\", lw=2.0, label=\"Posterior\")\n        _ax.axvline(\n            p_slider.value, color=\"crimson\", ls=\":\", lw=1.5,\n            label=\"True p = {:.2f}\".format(p_slider.value),\n        )\n        _ax.set_title(\"$n$ = {},   $y$ = {}\".format(_n, _y))\n        _ax.set_xlabel(\"$p$\")\n        _ax.set_xlim(0, 1)\n        _ax.set_ylim(bottom=0)\n        if _idx % 3 == 0:\n            _ax.set_ylabel(\"Density\")\n        if _idx == 0:\n            _ax.legend(fontsize=8, loc=\"upper left\")\n\n    _fig.suptitle(\n        \"Sequential updating \u2014 Prior: Beta({}, {})   |   True p = {:.2f}\".format(\n            _a, _b, p_slider.value\n        ),\n        fontsize=11,\n    )\n    _fig.tight_layout()\n    _fig\n    return\n\n\n@app.cell\ndef _(np, p_slider, prior_dd):\n    # Verify sequential = batch using the exact conjugate Beta-Binomial formula.\n    _rng = np.random.default_rng(42)\n    _flips = _rng.binomial(1, p_slider.value, 20)\n    _a, _b = prior_dd.value\n\n    # Sequential: update one flip at a time through all 20 flips\n    _aa, _bb = _a, _b\n    for _x in _flips:\n        _aa += int(_x)\n        _bb += 1 - int(_x)\n\n    # Batch: original prior + all 20 flips at once\n    _y20 = int(_flips.sum())\n    _a_batch = _a + _y20\n    _b_batch = _b + (20 - _y20)\n\n    _match = \"\u2713 identical\" if (_aa == _a_batch and _bb == _b_batch) else \"\u2717 mismatch\"\n\n    # Also show the n=5\u2192n=20 shortcut used in the last panel\n    _y5 = int(_flips[:5].sum())\n    _y_6_20 = int(_flips[5:].sum())\n    return\n\n\nif __name__ == \"__main__\":\n    app.run()\n",
+        }),
+        writable: false,
+        configurable: false,
+    });
+</script>
+<marimo-code hidden="">%23%20%2F%2F%2F%20script%0A%23%20requires-python%20%3D%20%22%3E%3D3.12%22%0A%23%20dependencies%20%3D%20%5B%22marimo%22%2C%20%22matplotlib%3D%3D3.10.8%22%2C%20%22numpy%3D%3D2.4.3%22%2C%20%22scipy%3D%3D1.17.1%22%5D%0A%23%20%0A%23%20%5Btool.marimo.export%5D%0A%23%20lock_kind%20%3D%20%22observed%22%0A%23%20%2F%2F%2F%0A%0Aimport%20marimo%0A%0A__generated_with%20%3D%20%220.25.2%22%0Aapp%20%3D%20marimo.App(width%3D%22medium%22)%0A%0A%0A%40app.cell%0Adef%20_()%3A%0A%20%20%20%20import%20marimo%20as%20mo%0A%20%20%20%20import%20numpy%20as%20np%0A%20%20%20%20import%20matplotlib.pyplot%20as%20plt%0A%20%20%20%20from%20scipy.stats%20import%20binom%2C%20beta%20as%20beta_dist%0A%0A%20%20%20%20return%20beta_dist%2C%20binom%2C%20mo%2C%20np%2C%20plt%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20mo.md(r%22%22%22%0A%20%20%20%20%23%20Bayesian%20Updating%3A%20Coin%20Flipping%0A%0A%20%20%20%20In%20Bayesian%20statistics%20an%20estimate%20of%20a%20parameter%20is%20not%20a%20number%3B%20it%20is%20actually%20a%20distribution.%20Suppose%20the%20parameter%20of%20interest%20is%20%24p%24%20and%20we%20have%20observed%20data.%20Then%20we%20want%20to%20find%20the%20so%20called%20posterior%20distribution%3A%0A%0A%20%20%20%20%24%24%0A%20%20%20%20Prob(p%7Cdata)%20%3D%20%5Cfrac%7BP(p%20%5Ctext%7B%20and%20data%7D)%7D%7BP(data)%7D%0A%20%20%20%20%24%24%0A%0A%20%20%20%20With%20this%20distribution%2C%20we%20can%20calculate%20the%20probability%20that%20%24p%24%20exceeds%200.8%20given%20our%20observed%20data%3A%20%24Prob(p%20%3E%200.8%20%7C%20data)%24.%0A%0A%20%20%20%20The%20notation%20%5C(P(p%20%5Ctext%7B%20and%20data%7D)%5C)%20is%20sometimes%20written%20as%20the%20joint%20probability%20%5C(P(p%2C%20data)%5C).%20Bayes'%20theorem%20then%20rewrites%20it%20as%20%5C(P(p%2C%20data)%20%3DP(data%7Cp)P(p)%20%5C).%20Hence%2C%20we%20get%0A%0A%20%20%20%20%24%24%0A%20%20%20%20Prob(p%7Cdata)%20%3D%20%5Cfrac%7BP(data%7Cp)P(p)%7D%7BP(data)%7D%0A%20%20%20%20%24%24%0A%0A%20%20%20%20In%20words%3A%0A%0A%20%20%20%20-%20%5C(P(p)%5C)%20is%20the%20**prior**%3A%20what%20we%20believed%20about%20%5C(p%5C)%20before%20observing%20data.%0A%20%20%20%20-%20%5C(P(data%7Cp)%5C)%20is%20the%20**likelihood**%3A%20how%20probable%20the%20observed%20data%20are%20for%20a%20given%20value%20of%20%5C(p%5C).%0A%20%20%20%20-%20%5C(P(data)%5C)%20is%20the%20**evidence**%20or%20normalising%20constant.%0A%20%20%20%20-%20%5C(P(p%7Cdata)%5C)%20is%20the%20**posterior**%3A%20our%20updated%20belief%20about%20%5C(p%5C)%20after%20seeing%20the%20data.%0A%0A%0A%20%20%20%20%23%23%20Bayes'%20theorem%0A%0A%20%20%20%20You%20want%20to%20estimate%20%24p%24%2C%20the%20probability%20a%20coin%20lands%20heads.%0A%20%20%20%20Before%20seeing%20any%20data%20you%20hold%20a%20**prior**%20belief%20%24P(p)%24.%0A%20%20%20%20After%20observing%20%24y%24%20heads%20in%20%24n%24%20throws%2C%20Bayes'%20theorem%20gives%20the%20**posterior**%3A%0A%0A%20%20%20%20%24%24%0A%20%20%20%20P(p%20%5Cmid%20y%2C%20n)%0A%20%20%20%20%3D%20%5Cfrac%7BP(y%20%5Cmid%20p%2C%20n)%5C%3B%20P(p)%7D%7B%5Cint_0%5E1%20P(y%20%5Cmid%20%5Cpi%2C%20n)%5C%2CP(%5Cpi)%5C%2Cd%5Cpi%7D%0A%20%20%20%20%5C%3B%5Cpropto%5C%3B%0A%20%20%20%20%5Cunderbrace%7BP(y%20%5Cmid%20p%2C%20n)%7D_%7B%5Ctext%7Blikelihood%7D%7D%5C%3B%0A%20%20%20%20%5Cunderbrace%7BP(p)%7D_%7B%5Ctext%7Bprior%7D%7D.%0A%20%20%20%20%24%24%0A%0A%20%20%20%20The%20**likelihood**%20%24P(y%20%5Cmid%20p%2C%20n)%20%3D%20%5Cbinom%7Bn%7D%7By%7Dp%5Ey(1-p)%5E%7Bn-y%7D%24%20is%20the%20probability%20of%0A%20%20%20%20observing%20exactly%20%24y%24%20heads%20in%20%24n%24%20independent%20throws%20when%20the%20true%20probability%20is%20%24p%24.%0A%20%20%20%20The%20denominator%20is%20a%20normalising%20constant%20that%20makes%20the%20posterior%20integrate%20to%201%3B%0A%20%20%20%20it%20does%20not%20depend%20on%20%24p%24%20and%20can%20be%20ignored%20when%20comparing%20posteriors.%0A%0A%20%20%20%20If%20we%20observe%2014%20heads%20in%2020%20throws%2C%20we%20can%20write%20the%20posterior%20as%20follows%3A%0A%20%20%20%20%24%24%0A%20%20%20%20Prob(p%7Cdata)%20%3D%20%20%5Cfrac%7B%5Cbinom%7B20%7D%7B14%7Dp%5E%7B14%7D(1-p)%5E%7B20-14%7DP(p)%7D%7B%5Cint_%7B0%7D%5E1%20%5Cbinom%7B20%7D%7B14%7D%5Cpi%5E%7B14%7D(1-%5Cpi)%5E%7B20-14%7DP(%5Cpi)d%5Cpi%7D%0A%20%20%20%20%24%24%0A%0A%20%20%20%20%23%23%20Grid%20approximation%0A%0A%20%20%20%20We%20evaluate%20the%20right-hand%20side%20on%20a%20fine%20grid%20of%20600%20values%20of%20%24p%20%5Cin%20(0%2C1)%24%2C%0A%20%20%20%20multiply%20prior%20by%20likelihood%20at%20each%20grid%20point%2C%20and%20divide%20by%20the%20sum%20to%20normalise.%0A%20%20%20%20The%20result%20is%20a%20discrete%20approximation%20to%20the%20posterior%20density.%0A%0A%20%20%20%20%23%23%20Sequential%20vs.%5C%20batch%20updating%0A%0A%20%20%20%20Suppose%20you%20throw%20the%20coin%20%24n%24%20times%2C%20recording%20outcomes%20%24x_1%2C%20x_2%2C%20%5Cldots%2C%20x_n%20%5Cin%20%5C%7Bheads%2Ctails%5C%7D%24.%0A%0A%20%20%20%20**Step%20by%20step**%3A%20use%20each%20flip%20to%20update%20the%20current%20posterior%2C%20which%20then%20becomes%20the%0A%20%20%20%20prior%20for%20the%20next%20flip%3A%0A%20%20%20%20%24%24%0A%20%20%20%20P(p%20%5Cmid%20x_1)%20%5Cpropto%20P(x_1%20%5Cmid%20p)%5C%2CP(p)%2C%0A%20%20%20%20%5Cquad%0A%20%20%20%20P(p%20%5Cmid%20x_1%2C%20x_2)%20%5Cpropto%20P(x_2%20%5Cmid%20p)%5Cunderbrace%7BP(p%20%5Cmid%20x_1)%7D_%7B%5Ctext%7Bnew%20prior%7D%7D%0A%20%20%20%20%5Cpropto%20P(x_2%20%5Cmid%20p)%5C%2CP(x_1%20%5Cmid%20p)%5C%2CP(p).%0A%20%20%20%20%24%24%0A%0A%20%20%20%20**All%20at%20once**%3A%20feed%20all%20%24n%24%20flips%20to%20the%20original%20prior%20simultaneously%3A%0A%20%20%20%20%24%24%0A%20%20%20%20P(p%20%5Cmid%20y%2C%20n)%20%5Cpropto%20P(y%20%5Cmid%20p%2C%20n)%5C%2CP(p)%0A%20%20%20%20%3D%20%5Cprod_%7Bi%3D1%7D%5En%20P(x_i%20%5Cmid%20p)%5Ccdot%20P(p).%0A%20%20%20%20%24%24%0A%20%20%20%20where%20%24y%24%20equals%20the%20number%20of%20heads%20in%20%24n%24%20flips.%0A%0A%20%20%20%20The%20two%20expressions%20are%20identical%20because%20the%20flips%20are%20independent.%0A%20%20%20%20It%20does%20not%20matter%20whether%20you%20update%20after%20every%20throw%20or%20after%20all%20%24n%24%20throws%20%E2%80%94%0A%20%20%20%20the%20final%20posterior%20is%20the%20same.%0A%0A%20%20%20%20---%0A%0A%20%20%20%20Use%20the%20controls%20below%20to%20set%20the%20true%20probability%20and%20choose%20a%20prior.%0A%20%20%20%20The%20six%20panels%20show%20how%20the%20posterior%20(solid%20blue)%20concentrates%20around%20the%0A%20%20%20%20true%20value%20as%20more%20data%20arrive.%20%20The%20dashed%20black%20line%20is%20the%20prior.%0A%20%20%20%20%22%22%22)%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(mo)%3A%0A%20%20%20%20p_slider%20%3D%20mo.ui.slider(%0A%20%20%20%20%20%20%20%200.1%2C%200.9%2C%20value%3D0.7%2C%20step%3D0.05%2C%0A%20%20%20%20%20%20%20%20label%3Dr%22True%20probability%20of%20head%20%24p%24%22%2C%0A%20%20%20%20)%0A%20%20%20%20prior_dd%20%3D%20mo.ui.dropdown(%0A%20%20%20%20%20%20%20%20options%3D%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Uniform%20%20%E2%80%94%20%20Beta(1%2C%201)%22%3A%20(1%2C%201)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Sceptical%20%20%E2%80%94%20%20Beta(2%2C%205)%2C%20%20mode%20%3D%200.2%22%3A%20(2%2C%205)%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%22Optimistic%20%20%E2%80%94%20%20Beta(5%2C%202)%2C%20%20mode%20%3D%200.8%22%3A%20(5%2C%202)%2C%0A%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20value%3D%22Uniform%20%20%E2%80%94%20%20Beta(1%2C%201)%22%2C%0A%20%20%20%20%20%20%20%20label%3D%22Prior%20for%20p%22%2C%0A%20%20%20%20)%0A%20%20%20%20mo.vstack(%5Bp_slider%2C%20prior_dd%5D)%0A%20%20%20%20return%20p_slider%2C%20prior_dd%0A%0A%0A%40app.cell%0Adef%20_(beta_dist%2C%20binom%2C%20np%2C%20p_slider%2C%20plt%2C%20prior_dd)%3A%0A%20%20%20%20%23%20Fixed%20seed%20so%20the%20same%20p%20always%20produces%20the%20same%20coin%20sequence.%0A%20%20%20%20_rng%20%3D%20np.random.default_rng(42)%0A%20%20%20%20_flips%20%3D%20_rng.binomial(1%2C%20p_slider.value%2C%2020)%0A%0A%20%20%20%20%23%20Grid%0A%20%20%20%20_p%20%3D%20np.linspace(0.001%2C%200.999%2C%20600)%0A%20%20%20%20_dp%20%3D%20_p%5B1%5D%20-%20_p%5B0%5D%0A%20%20%20%20_a%2C%20_b%20%3D%20prior_dd.value%0A%0A%20%20%20%20def%20_normalize(arr)%3A%0A%20%20%20%20%20%20%20%20return%20arr%20%2F%20(arr.sum()%20*%20_dp)%0A%0A%20%20%20%20def%20_update(current_pdf%2C%20y_new%2C%20n_new)%3A%0A%20%20%20%20%20%20%20%20return%20_normalize(binom.pmf(y_new%2C%20n_new%2C%20_p)%20*%20current_pdf)%0A%0A%20%20%20%20%23%20Build%20sequential%20posteriors.%0A%20%20%20%20%23%20n%3D1..5%3A%20update%20one%20flip%20at%20a%20time.%0A%20%20%20%20%23%20n%3D20%3A%20update%20from%20the%20n%3D5%20posterior%20with%20the%2015%20new%20flips%20at%20once%0A%20%20%20%20%23%20%20%20%20%20%20%20(valid%20because%20sequential%20%3D%20batch).%0A%20%20%20%20_current%20%3D%20_normalize(beta_dist.pdf(_p%2C%20_a%2C%20_b))%0A%20%20%20%20_priors_to_plot%20%3D%20%5B%5D%0A%20%20%20%20_posteriors%20%3D%20%5B%5D%0A%20%20%20%20_y_cumul%20%3D%20%5B%5D%0A%0A%20%20%20%20for%20_i%20in%20range(5)%3A%0A%20%20%20%20%20%20%20%20_priors_to_plot.append(_current)%0A%20%20%20%20%20%20%20%20_current%20%3D%20_update(_current%2C%20int(_flips%5B_i%5D)%2C%201)%0A%20%20%20%20%20%20%20%20_posteriors.append(_current)%0A%20%20%20%20%20%20%20%20_y_cumul.append(int(_flips%5B%3A%20_i%20%2B%201%5D.sum()))%0A%0A%20%20%20%20_priors_to_plot.append(_current)%20%20%20%20%20%20%20%20%20%20%23%20n%3D5%20posterior%20becomes%20prior%20for%20n%3D20%0A%20%20%20%20_current%20%3D%20_update(_current%2C%20int(_flips%5B5%3A%5D.sum())%2C%2015)%0A%20%20%20%20_posteriors.append(_current)%0A%20%20%20%20_y_cumul.append(int(_flips.sum()))%0A%0A%20%20%20%20_n_vals%20%3D%20%5B1%2C%202%2C%203%2C%204%2C%205%2C%2020%5D%0A%20%20%20%20_fig%2C%20_axes%20%3D%20plt.subplots(2%2C%203%2C%20figsize%3D(12%2C%207))%0A%0A%20%20%20%20for%20_idx%2C%20(_ax%2C%20_n%2C%20_y%2C%20_pri%2C%20_post)%20in%20enumerate(%0A%20%20%20%20%20%20%20%20zip(_axes.flat%2C%20_n_vals%2C%20_y_cumul%2C%20_priors_to_plot%2C%20_posteriors)%0A%20%20%20%20)%3A%0A%20%20%20%20%20%20%20%20_label_prior%20%3D%20%22Prior%20%20Beta(%7B%7D%2C%20%7B%7D)%22.format(_a%2C%20_b)%20if%20_idx%20%3D%3D%200%20else%20%22Previous%20posterior%22%0A%20%20%20%20%20%20%20%20_ax.plot(_p%2C%20_pri%2C%20color%3D%22black%22%2C%20lw%3D1.5%2C%20ls%3D%22--%22%2C%20label%3D_label_prior)%0A%20%20%20%20%20%20%20%20_ax.plot(_p%2C%20_post%2C%20color%3D%22steelblue%22%2C%20lw%3D2.0%2C%20label%3D%22Posterior%22)%0A%20%20%20%20%20%20%20%20_ax.axvline(%0A%20%20%20%20%20%20%20%20%20%20%20%20p_slider.value%2C%20color%3D%22crimson%22%2C%20ls%3D%22%3A%22%2C%20lw%3D1.5%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20label%3D%22True%20p%20%3D%20%7B%3A.2f%7D%22.format(p_slider.value)%2C%0A%20%20%20%20%20%20%20%20)%0A%20%20%20%20%20%20%20%20_ax.set_title(%22%24n%24%20%3D%20%7B%7D%2C%20%20%20%24y%24%20%3D%20%7B%7D%22.format(_n%2C%20_y))%0A%20%20%20%20%20%20%20%20_ax.set_xlabel(%22%24p%24%22)%0A%20%20%20%20%20%20%20%20_ax.set_xlim(0%2C%201)%0A%20%20%20%20%20%20%20%20_ax.set_ylim(bottom%3D0)%0A%20%20%20%20%20%20%20%20if%20_idx%20%25%203%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20_ax.set_ylabel(%22Density%22)%0A%20%20%20%20%20%20%20%20if%20_idx%20%3D%3D%200%3A%0A%20%20%20%20%20%20%20%20%20%20%20%20_ax.legend(fontsize%3D8%2C%20loc%3D%22upper%20left%22)%0A%0A%20%20%20%20_fig.suptitle(%0A%20%20%20%20%20%20%20%20%22Sequential%20updating%20%E2%80%94%20Prior%3A%20Beta(%7B%7D%2C%20%7B%7D)%20%20%20%7C%20%20%20True%20p%20%3D%20%7B%3A.2f%7D%22.format(%0A%20%20%20%20%20%20%20%20%20%20%20%20_a%2C%20_b%2C%20p_slider.value%0A%20%20%20%20%20%20%20%20)%2C%0A%20%20%20%20%20%20%20%20fontsize%3D11%2C%0A%20%20%20%20)%0A%20%20%20%20_fig.tight_layout()%0A%20%20%20%20_fig%0A%20%20%20%20return%0A%0A%0A%40app.cell%0Adef%20_(np%2C%20p_slider%2C%20prior_dd)%3A%0A%20%20%20%20%23%20Verify%20sequential%20%3D%20batch%20using%20the%20exact%20conjugate%20Beta-Binomial%20formula.%0A%20%20%20%20_rng%20%3D%20np.random.default_rng(42)%0A%20%20%20%20_flips%20%3D%20_rng.binomial(1%2C%20p_slider.value%2C%2020)%0A%20%20%20%20_a%2C%20_b%20%3D%20prior_dd.value%0A%0A%20%20%20%20%23%20Sequential%3A%20update%20one%20flip%20at%20a%20time%20through%20all%2020%20flips%0A%20%20%20%20_aa%2C%20_bb%20%3D%20_a%2C%20_b%0A%20%20%20%20for%20_x%20in%20_flips%3A%0A%20%20%20%20%20%20%20%20_aa%20%2B%3D%20int(_x)%0A%20%20%20%20%20%20%20%20_bb%20%2B%3D%201%20-%20int(_x)%0A%0A%20%20%20%20%23%20Batch%3A%20original%20prior%20%2B%20all%2020%20flips%20at%20once%0A%20%20%20%20_y20%20%3D%20int(_flips.sum())%0A%20%20%20%20_a_batch%20%3D%20_a%20%2B%20_y20%0A%20%20%20%20_b_batch%20%3D%20_b%20%2B%20(20%20-%20_y20)%0A%0A%20%20%20%20_match%20%3D%20%22%E2%9C%93%20identical%22%20if%20(_aa%20%3D%3D%20_a_batch%20and%20_bb%20%3D%3D%20_b_batch)%20else%20%22%E2%9C%97%20mismatch%22%0A%0A%20%20%20%20%23%20Also%20show%20the%20n%3D5%E2%86%92n%3D20%20shortcut%20used%20in%20the%20last%20panel%0A%20%20%20%20_y5%20%3D%20int(_flips%5B%3A5%5D.sum())%0A%20%20%20%20_y_6_20%20%3D%20int(_flips%5B5%3A%5D.sum())%0A%20%20%20%20return%0A%0A%0Aif%20__name__%20%3D%3D%20%22__main__%22%3A%0A%20%20%20%20app.run()%0A</marimo-code></head>
+  <body>
+    <div id="root"></div>
+    <script data-marimo="true">
+      Object.defineProperty(window, "__MARIMO_MOUNT_CONFIG__", {
+        value: Object.freeze({
+            "filename": "notebook.py",
+            "cwd": "",
+            "lspWorkspace": null,
+            "mode": "read",
+            "version": "0.25.2",
+            "serverToken": "unused",
+            "config": {"ai": {"allow_provider_config": true, "custom_providers": {}, "enabled": true, "models": {"custom_models": [], "displayed_models": []}}, "completion": {"activate_on_typing": true, "auto_close_pairs": true, "copilot": false, "signature_hint_on_typing": false}, "diagnostics": {"sql_linter": true}, "display": {"cell_output": "below", "code_editor_font_size": 14, "code_lens": true, "dataframes": "rich", "default_table_max_columns": 50, "default_table_page_size": 10, "default_width": "medium", "reference_highlighting": true, "theme": "light"}, "formatting": {"line_length": 79}, "keymap": {"overrides": {}, "preset": "default"}, "language_servers": {"pylsp": {"enable_flake8": false, "enable_mypy": true, "enable_pydocstyle": false, "enable_pyflakes": false, "enable_pylint": false, "enable_ruff": true, "enabled": false}}, "mcp": {"mcpServers": {}, "presets": []}, "package_management": {"manager": "uv"}, "runtime": {"auto_instantiate": false, "auto_reload": "off", "default_csv_encoding": "utf-8", "default_sql_output": "auto", "on_cell_change": "autorun", "output_max_bytes": 8000000, "reactive_tests": true, "show_tracebacks": false, "std_stream_max_bytes": 1000000, "watcher_on_save": "lazy"}, "save": {"autosave": "off", "autosave_delay": 1000, "format_on_save": false}, "server": {"browser": "default", "follow_symlink": false}, "snippets": {"custom_paths": [], "include_default_snippets": true}},
+            "configOverrides": {},
+            "appConfig": {"sql_output": "auto", "width": "medium"},
+            "layout": null,
+            "view": {"showAppCode": false},
+            "notebook": null,
+            "session": null,
+            "runtimeConfig": null
+        }),
+        writable: false,
+        configurable: false,
+      });
+    </script>
+  </body>
+</html>
